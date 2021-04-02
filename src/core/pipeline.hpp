@@ -14,11 +14,11 @@ namespace ve
     class Pipeline
     {
     public:
-        Pipeline(const Device &device, const std::string &vertFilepath, const std::string &fragFilepath, const PipelineConfigInfo &configInfo);
+        Pipeline(Device &, const std::string &vertFilepath, const std::string &fragFilepath, const PipelineConfigInfo &);
         ~Pipeline();
 
-        Pipeline(const Pipeline&) = delete;
-        void operator=(const Pipeline&) = delete;
+        Pipeline(const Pipeline &) = delete;
+        void operator=(const Pipeline &) = delete;
 
         static PipelineConfigInfo defaultPipelineConfigInfo(uint32_t width, uint32_t height);
 

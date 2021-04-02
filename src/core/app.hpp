@@ -1,7 +1,8 @@
 #pragma once
 
-#include "window.hpp"
 #include "pipeline.hpp"
+#include "window.hpp"
+#include "device.hpp"
 
 namespace ve
 {
@@ -15,6 +16,7 @@ namespace ve
 
     private:
         Window window{WIDTH, HEIGHT, "VulkanEngine"};
-        Pipeline pipeline{"../src/shaders/simple_shader.vert.spv", "../src/shaders/simple_shader.frag.spv"};
+        Device device{window};
+        Pipeline pipeline{device, "../src/shaders/simple_shader.vert.spv", "../src/shaders/simple_shader.frag.spv", Pipeline::defaultPipelineConfigInfo(WIDTH, HEIGHT)};
     };
 }
