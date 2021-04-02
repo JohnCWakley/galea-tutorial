@@ -36,7 +36,5 @@ namespace ve
         std::unique_ptr<Pipeline> pipeline;
         VkPipelineLayout pipelineLayout;
         std::vector<VkCommandBuffer> commandBuffers;
-
-        // Pipeline pipeline{device, "../src/shaders/simple_shader.vert.spv", "../src/shaders/simple_shader.frag.spv", Pipeline::defaultPipelineConfigInfo(WIDTH, HEIGHT)};
     };
 }
