@@ -37,7 +37,7 @@ namespace ve
             swapChain = nullptr;
         }
 
-        for (int i = 0; i < depthImages.size(); i++)
+        for (std::vector<VkImage_T*>::size_type i = 0; i < depthImages.size(); i++)
         {
             vkDestroyImageView(device.device(), depthImageViews[i], nullptr);
             vkDestroyImage(device.device(), depthImages[i], nullptr);
@@ -330,7 +330,7 @@ namespace ve
         depthImageMemorys.resize(imageCount());
         depthImageViews.resize(imageCount());
 
-        for (int i = 0; i < depthImages.size(); i++)
+        for (std::vector<VkImage_T*>::size_type i = 0; i < depthImages.size(); i++)
         {
             VkImageCreateInfo imageInfo{};
             imageInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
