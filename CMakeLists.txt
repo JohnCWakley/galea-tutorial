@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.14.0)
-project(VulkanTest VERSION 0.1.0)
-
-find_package(Vulkan REQUIRED)
+project(vulkan VERSION 0.1.0)
 
 include(FetchContent)
 include(CTest)
@@ -11,6 +9,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++17 -O2")
 
 file(GLOB_RECURSE sources ${PROJECT_SOURCE_DIR}/src/*.cpp)
 
+# FETCH GLFW
 FetchContent_Declare(glfw
     GIT_REPOSITORY https://github.com/glfw/glfw.git
     GIT_TAG 3.3.3
@@ -24,6 +23,7 @@ if(NOT glfw_POPULATED)
     add_subdirectory(${glfw_SOURCE_DIR} ${glfw_BINARY_DIR})
 endif()
 
+# FETCH GLM:
 FetchContent_Declare(glm
     GIT_REPOSITORY https://github.com/g-truc/glm.git
     GIT_TAG 0.9.9.8
@@ -36,11 +36,16 @@ if(NOT glm_POPULATED)
     add_subdirectory(${glm_SOURCE_DIR} ${glm_BINARY_DIR})
 endif()
 
+# FIND VULKAN:
+find_package(Vulkan REQUIRED)
+
+# EXECUTABLE:
 add_executable(${PROJECT_NAME} ${sources})
+
 target_include_directories(${PROJECT_NAME} PRIVATE ${glfw_SOURCE_DIR}/include)
 target_include_directories(${PROJECT_NAME} PRIVATE ${glm_SOURCE_DIR})
 
-target_link_libraries(${PROJECT_NAME} glfw pthread Vulkan::Vulkan)# dl X11 Xxf86vm Xrandr Xi)
+target_link_libraries(${PROJECT_NAME} glfw pthread Vulkan::Vulkan)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
