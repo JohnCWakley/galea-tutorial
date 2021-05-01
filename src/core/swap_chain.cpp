@@ -37,7 +37,7 @@ namespace ve
             swapChain = nullptr;
         }
 
-        for (std::vector<VkImage_T*>::size_type i = 0; i < depthImages.size(); i++)
+        for (std::vector<VkImage_T *>::size_type i = 0; i < depthImages.size(); i++)
         {
             vkDestroyImageView(device.device(), depthImageViews[i], nullptr);
             vkDestroyImage(device.device(), depthImages[i], nullptr);
@@ -269,13 +269,12 @@ namespace ve
         subpass.pDepthStencilAttachment = &depthAttachmentRef;
 
         VkSubpassDependency dependency = {};
-
         dependency.dstSubpass = 0;
-        dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
-        dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+        dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
+        dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
         dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
         dependency.srcAccessMask = 0;
-        dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+        dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
 
         std::array<VkAttachmentDescription, 2> attachments = {colorAttachment, depthAttachment};
         VkRenderPassCreateInfo renderPassInfo = {};
@@ -324,13 +323,15 @@ namespace ve
     void SwapChain::createDepthResources()
     {
         VkFormat depthFormat = findDepthFormat();
+        swapChainDepthFormat = depthFormat;
+
         VkExtent2D swapChainExtent = getSwapChainExtent();
 
         depthImages.resize(imageCount());
         depthImageMemorys.resize(imageCount());
         depthImageViews.resize(imageCount());
 
-        for (std::vector<VkImage_T*>::size_type i = 0; i < depthImages.size(); i++)
+        for (std::vector<VkImage_T *>::size_type i = 0; i < depthImages.size(); i++)
         {
             VkImageCreateInfo imageInfo{};
             imageInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
