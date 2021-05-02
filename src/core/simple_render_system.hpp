@@ -1,8 +1,8 @@
 #pragma once
 
 #include "device.hpp"
-#include "pipeline.hpp"
 #include "game_object.hpp"
+#include "pipeline.hpp"
 
 #include <memory>
 #include <vector>

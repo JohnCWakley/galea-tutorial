@@ -1,16 +1,22 @@
 #include "pipeline.hpp"
 #include "model.hpp"
 
-#include <iostream>
-#include <fstream>
-#include <stdexcept>
 #include <cassert>
+#include <fstream>
+#include <iostream>
+#include <stdexcept>
 
 namespace ve
 {
-    Pipeline::Pipeline(Device &d, const std::string &vertFilepath, const std::string &fragFilepath, const PipelineConfigInfo &ci) : device{d}
+
+    Pipeline::Pipeline(
+        Device &device,
+        const std::string &vertFilepath,
+        const std::string &fragFilepath,
+        const PipelineConfigInfo &configInfo)
+        : device{device}
     {
-        createGraphicsPipeline(vertFilepath, fragFilepath, ci);
+        createGraphicsPipeline(vertFilepath, fragFilepath, configInfo);
     }
 
     Pipeline::~Pipeline()
@@ -30,21 +36,26 @@ namespace ve
         }
 
         size_t fileSize = static_cast<size_t>(file.tellg());
-
         std::vector<char> buffer(fileSize);
 
         file.seekg(0);
         file.read(buffer.data(), fileSize);
 
         file.close();
-
         return buffer;
     }
 
-    void Pipeline::createGraphicsPipeline(const std::string &vertFilepath, const std::string &fragFilepath, const PipelineConfigInfo &configInfo)
+    void Pipeline::createGraphicsPipeline(
+        const std::string &vertFilepath,
+        const std::string &fragFilepath,
+        const PipelineConfigInfo &configInfo)
     {
-        assert(configInfo.pipelineLayout != VK_NULL_HANDLE && "Cannot create graphics pipeline:: no pipelineLayout provided in configInfo");
-        assert(configInfo.renderPass != VK_NULL_HANDLE && "Cannot create graphics pipeline:: no renderPass provided in configInfo");
+        assert(
+            configInfo.pipelineLayout != VK_NULL_HANDLE &&
+            "Cannot create graphics pipeline: no pipelineLayout provided in configInfo");
+        assert(
+            configInfo.renderPass != VK_NULL_HANDLE &&
+            "Cannot create graphics pipeline: no renderPass provided in configInfo");
 
         auto vertCode = readFile(vertFilepath);
         auto fragCode = readFile(fragFilepath);
@@ -53,7 +64,6 @@ namespace ve
         createShaderModule(fragCode, &fragShaderModule);
 
         VkPipelineShaderStageCreateInfo shaderStages[2];
-
         shaderStages[0].sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
         shaderStages[0].stage = VK_SHADER_STAGE_VERTEX_BIT;
         shaderStages[0].module = vertShaderModule;
@@ -61,7 +71,6 @@ namespace ve
         shaderStages[0].flags = 0;
         shaderStages[0].pNext = nullptr;
         shaderStages[0].pSpecializationInfo = nullptr;
-
         shaderStages[1].sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
         shaderStages[1].stage = VK_SHADER_STAGE_FRAGMENT_BIT;
         shaderStages[1].module = fragShaderModule;
@@ -72,10 +81,10 @@ namespace ve
 
         auto bindingDescriptions = Model::Vertex::getBindingDescriptions();
         auto attributeDescriptions = Model::Vertex::getAttributeDescriptions();
-
         VkPipelineVertexInputStateCreateInfo vertexInputInfo{};
         vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
-        vertexInputInfo.vertexAttributeDescriptionCount = static_cast<uint32_t>(attributeDescriptions.size());
+        vertexInputInfo.vertexAttributeDescriptionCount =
+            static_cast<uint32_t>(attributeDescriptions.size());
         vertexInputInfo.vertexBindingDescriptionCount = static_cast<uint32_t>(bindingDescriptions.size());
         vertexInputInfo.pVertexAttributeDescriptions = attributeDescriptions.data();
         vertexInputInfo.pVertexBindingDescriptions = bindingDescriptions.data();
@@ -100,9 +109,15 @@ namespace ve
         pipelineInfo.basePipelineIndex = -1;
         pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
 
-        if (vkCreateGraphicsPipelines(device.device(), VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &graphicsPipeline) != VK_SUCCESS)
+        if (vkCreateGraphicsPipelines(
+                device.device(),
+                VK_NULL_HANDLE,
+                1,
+                &pipelineInfo,
+                nullptr,
+                &graphicsPipeline) != VK_SUCCESS)
         {
-            throw std::runtime_error("Failed to create graphics pipeline");
+            throw std::runtime_error("failed to create graphics pipeline");
         }
     }
 
@@ -115,7 +130,7 @@ namespace ve
 
         if (vkCreateShaderModule(device.device(), &createInfo, nullptr, shaderModule) != VK_SUCCESS)
         {
-            throw std::runtime_error("Failed to create shader module");
+            throw std::runtime_error("failed to create shader module");
         }
     }
 
@@ -156,7 +171,9 @@ namespace ve
         configInfo.multisampleInfo.alphaToCoverageEnable = VK_FALSE; // Optional
         configInfo.multisampleInfo.alphaToOneEnable = VK_FALSE;      // Optional
 
-        configInfo.colorBlendAttachment.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
+        configInfo.colorBlendAttachment.colorWriteMask =
+            VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT |
+            VK_COLOR_COMPONENT_A_BIT;
         configInfo.colorBlendAttachment.blendEnable = VK_FALSE;
         configInfo.colorBlendAttachment.srcColorBlendFactor = VK_BLEND_FACTOR_ONE;  // Optional
         configInfo.colorBlendAttachment.dstColorBlendFactor = VK_BLEND_FACTOR_ZERO; // Optional
@@ -189,7 +206,9 @@ namespace ve
         configInfo.dynamicStateEnables = {VK_DYNAMIC_STATE_VIEWPORT, VK_DYNAMIC_STATE_SCISSOR};
         configInfo.dynamicStateInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
         configInfo.dynamicStateInfo.pDynamicStates = configInfo.dynamicStateEnables.data();
-        configInfo.dynamicStateInfo.dynamicStateCount = static_cast<uint32_t>(configInfo.dynamicStateEnables.size());
+        configInfo.dynamicStateInfo.dynamicStateCount =
+            static_cast<uint32_t>(configInfo.dynamicStateEnables.size());
         configInfo.dynamicStateInfo.flags = 0;
     }
+
 }

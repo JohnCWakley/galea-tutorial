@@ -1,10 +1,11 @@
 #pragma once
 
 #include "device.hpp"
-#include "window.hpp"
 #include "game_object.hpp"
 #include "renderer.hpp"
+#include "window.hpp"
 
+// std
 #include <memory>
 #include <vector>
 
@@ -27,7 +28,7 @@ namespace ve
     private:
         void loadGameObjects();
 
-        Window window{WIDTH, HEIGHT, "VulkanEngine"};
+        Window window{WIDTH, HEIGHT, "Vulkan Tutorial"};
         Device device{window};
         Renderer renderer{window, device};
 

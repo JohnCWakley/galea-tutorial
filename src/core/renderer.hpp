@@ -20,14 +20,11 @@ namespace ve
         Renderer &operator=(const Renderer &) = delete;
 
         VkRenderPass getSwapChainRenderPass() const { return swapChain->getRenderPass(); }
-        bool isFrameInProgress() const
-        {
-            assert(isFrameStarted && "Cannot get command buffer when frame not in progress");
-            return isFrameStarted;
-        }
+        bool isFrameInProgress() const { return isFrameStarted; }
 
         VkCommandBuffer getCurrentCommandBuffer() const
         {
+            assert(isFrameStarted && "Cannot get command buffer when frame not in progress");
             return commandBuffers[currentFrameIndex];
         }
 
@@ -53,7 +50,7 @@ namespace ve
         std::vector<VkCommandBuffer> commandBuffers;
 
         uint32_t currentImageIndex;
-        int currentFrameIndex;
-        bool isFrameStarted;
+        int currentFrameIndex{0};
+        bool isFrameStarted{false};
     };
 }

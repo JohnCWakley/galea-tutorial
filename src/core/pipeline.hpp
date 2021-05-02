@@ -7,10 +7,11 @@
 
 namespace ve
 {
+
     struct PipelineConfigInfo
     {
-        PipelineConfigInfo(const PipelineConfigInfo&) = delete;
-        PipelineConfigInfo& operator=(const PipelineConfigInfo&) = delete;
+        PipelineConfigInfo(const PipelineConfigInfo &) = delete;
+        PipelineConfigInfo &operator=(const PipelineConfigInfo &) = delete;
 
         VkPipelineViewportStateCreateInfo viewportInfo;
         VkPipelineInputAssemblyStateCreateInfo inputAssemblyInfo;
@@ -29,18 +30,28 @@ namespace ve
     class Pipeline
     {
     public:
-        Pipeline(Device &, const std::string &vertFilepath, const std::string &fragFilepath, const PipelineConfigInfo &);
+        Pipeline(
+            Device &device,
+            const std::string &vertFilepath,
+            const std::string &fragFilepath,
+            const PipelineConfigInfo &configInfo);
         ~Pipeline();
 
         Pipeline(const Pipeline &) = delete;
-        Pipeline& operator=(const Pipeline &) = delete;
+        Pipeline &operator=(const Pipeline &) = delete;
 
         void bind(VkCommandBuffer commandBuffer);
-        static void defaultPipelineConfigInfo(PipelineConfigInfo& configInfo);
+
+        static void defaultPipelineConfigInfo(PipelineConfigInfo &configInfo);
 
     private:
         static std::vector<char> readFile(const std::string &filepath);
-        void createGraphicsPipeline(const std::string &vertFilepath, const std::string &fragFilepath, const PipelineConfigInfo &configInfo);
+
+        void createGraphicsPipeline(
+            const std::string &vertFilepath,
+            const std::string &fragFilepath,
+            const PipelineConfigInfo &configInfo);
+
         void createShaderModule(const std::vector<char> &code, VkShaderModule *shaderModule);
 
         Device &device;

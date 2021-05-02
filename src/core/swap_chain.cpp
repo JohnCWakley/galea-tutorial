@@ -10,16 +10,29 @@
 
 namespace ve
 {
-    SwapChain::SwapChain(Device &deviceRef, VkExtent2D extent) : device{deviceRef}, windowExtent{extent}
+
+    SwapChain::SwapChain(Device &deviceRef, VkExtent2D extent)
+        : device{deviceRef}, windowExtent{extent}
     {
         init();
     }
 
-    SwapChain::SwapChain(Device &deviceRef, VkExtent2D extent, std::shared_ptr<SwapChain> previous) : device{deviceRef}, windowExtent{extent}, oldSwapChain{previous}
+    SwapChain::SwapChain(
+        Device &deviceRef, VkExtent2D extent, std::shared_ptr<SwapChain> previous)
+        : device{deviceRef}, windowExtent{extent}, oldSwapChain{previous}
     {
         init();
-
         oldSwapChain = nullptr;
+    }
+
+    void SwapChain::init()
+    {
+        createSwapChain();
+        createImageViews();
+        createRenderPass();
+        createDepthResources();
+        createFramebuffers();
+        createSyncObjects();
     }
 
     SwapChain::~SwapChain()
@@ -28,7 +41,6 @@ namespace ve
         {
             vkDestroyImageView(device.device(), imageView, nullptr);
         }
-
         swapChainImageViews.clear();
 
         if (swapChain != nullptr)
@@ -37,7 +49,7 @@ namespace ve
             swapChain = nullptr;
         }
 
-        for (std::vector<VkImage_T *>::size_type i = 0; i < depthImages.size(); i++)
+        for (int i = 0; i < depthImages.size(); i++)
         {
             vkDestroyImageView(device.device(), depthImageViews[i], nullptr);
             vkDestroyImage(device.device(), depthImages[i], nullptr);
@@ -60,16 +72,6 @@ namespace ve
         }
     }
 
-    void SwapChain::init()
-    {
-        createSwapChain();
-        createImageViews();
-        createRenderPass();
-        createDepthResources();
-        createFramebuffers();
-        createSyncObjects();
-    }
-
     VkResult SwapChain::acquireNextImage(uint32_t *imageIndex)
     {
         vkWaitForFences(
@@ -90,8 +92,7 @@ namespace ve
         return result;
     }
 
-    VkResult SwapChain::submitCommandBuffers(
-        const VkCommandBuffer *buffers, uint32_t *imageIndex)
+    VkResult SwapChain::submitCommandBuffers(const VkCommandBuffer *buffers, uint32_t *imageIndex)
     {
         if (imagesInFlight[*imageIndex] != VK_NULL_HANDLE)
         {
@@ -270,11 +271,14 @@ namespace ve
 
         VkSubpassDependency dependency = {};
         dependency.dstSubpass = 0;
-        dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
-        dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
+        dependency.dstAccessMask =
+            VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
+        dependency.dstStageMask =
+            VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
         dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
         dependency.srcAccessMask = 0;
-        dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
+        dependency.srcStageMask =
+            VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
 
         std::array<VkAttachmentDescription, 2> attachments = {colorAttachment, depthAttachment};
         VkRenderPassCreateInfo renderPassInfo = {};
@@ -324,14 +328,13 @@ namespace ve
     {
         VkFormat depthFormat = findDepthFormat();
         swapChainDepthFormat = depthFormat;
-
         VkExtent2D swapChainExtent = getSwapChainExtent();
 
         depthImages.resize(imageCount());
         depthImageMemorys.resize(imageCount());
         depthImageViews.resize(imageCount());
 
-        for (std::vector<VkImage_T *>::size_type i = 0; i < depthImages.size(); i++)
+        for (int i = 0; i < depthImages.size(); i++)
         {
             VkImageCreateInfo imageInfo{};
             imageInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
@@ -400,12 +403,12 @@ namespace ve
         }
     }
 
-    VkSurfaceFormatKHR SwapChain::chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR> &availableFormats)
+    VkSurfaceFormatKHR SwapChain::chooseSwapSurfaceFormat(
+        const std::vector<VkSurfaceFormatKHR> &availableFormats)
     {
         for (const auto &availableFormat : availableFormats)
         {
-            if (
-                availableFormat.format == VK_FORMAT_B8G8R8A8_SRGB &&
+            if (availableFormat.format == VK_FORMAT_B8G8R8A8_SRGB &&
                 availableFormat.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR)
             {
                 return availableFormat;
@@ -418,14 +421,14 @@ namespace ve
     VkPresentModeKHR SwapChain::chooseSwapPresentMode(
         const std::vector<VkPresentModeKHR> &availablePresentModes)
     {
-        // for (const auto &availablePresentMode : availablePresentModes)
-        // {
-        //     if (availablePresentMode == VK_PRESENT_MODE_MAILBOX_KHR)
-        //     {
-        //         std::cout << "Present mode: Mailbox" << std::endl;
-        //         return availablePresentMode;
-        //     }
-        // }
+        for (const auto &availablePresentMode : availablePresentModes)
+        {
+            if (availablePresentMode == VK_PRESENT_MODE_MAILBOX_KHR)
+            {
+                std::cout << "Present mode: Mailbox" << std::endl;
+                return availablePresentMode;
+            }
+        }
 
         // for (const auto &availablePresentMode : availablePresentModes) {
         //   if (availablePresentMode == VK_PRESENT_MODE_IMMEDIATE_KHR) {

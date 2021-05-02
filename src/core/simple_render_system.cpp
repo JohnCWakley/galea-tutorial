@@ -5,11 +5,13 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/constants.hpp>
 
-#include <stdexcept>
 #include <array>
+#include <cassert>
+#include <stdexcept>
 
 namespace ve
 {
+
     struct SimplePushConstantData
     {
         glm::mat2 transform{1.f};
@@ -17,7 +19,8 @@ namespace ve
         alignas(16) glm::vec3 color;
     };
 
-    SimpleRenderSystem::SimpleRenderSystem(Device &device, VkRenderPass renderPass) : device{device}
+    SimpleRenderSystem::SimpleRenderSystem(Device &device, VkRenderPass renderPass)
+        : device{device}
     {
         createPipelineLayout();
         createPipeline(renderPass);
@@ -41,10 +44,10 @@ namespace ve
         pipelineLayoutInfo.pSetLayouts = nullptr;
         pipelineLayoutInfo.pushConstantRangeCount = 1;
         pipelineLayoutInfo.pPushConstantRanges = &pushConstantRange;
-
-        if (vkCreatePipelineLayout(device.device(), &pipelineLayoutInfo, nullptr, &pipelineLayout) != VK_SUCCESS)
+        if (vkCreatePipelineLayout(device.device(), &pipelineLayoutInfo, nullptr, &pipelineLayout) !=
+            VK_SUCCESS)
         {
-            throw std::runtime_error("Failed to create pipeline layout");
+            throw std::runtime_error("failed to create pipeline layout!");
         }
     }
 
@@ -56,25 +59,37 @@ namespace ve
         Pipeline::defaultPipelineConfigInfo(pipelineConfig);
         pipelineConfig.renderPass = renderPass;
         pipelineConfig.pipelineLayout = pipelineLayout;
-        pipeline = std::make_unique<Pipeline>(device, "../src/shaders/simple_shader.vert.spv", "../src/shaders/simple_shader.frag.spv", pipelineConfig);
+        pipeline = std::make_unique<Pipeline>(
+            device,
+            "../src/shaders/simple_shader.vert.spv",
+            "../src/shaders/simple_shader.frag.spv",
+            pipelineConfig);
     }
 
-    void SimpleRenderSystem::renderGameObjects(VkCommandBuffer commandBuffer, std::vector<GameObject> &gameObjects)
+    void SimpleRenderSystem::renderGameObjects(
+        VkCommandBuffer commandBuffer, std::vector<GameObject> &gameObjects)
     {
         pipeline->bind(commandBuffer);
 
         for (auto &obj : gameObjects)
         {
             obj.transform2d.rotation = glm::mod(obj.transform2d.rotation + 0.01f, glm::two_pi<float>());
+
             SimplePushConstantData push{};
             push.offset = obj.transform2d.translation;
             push.color = obj.color;
             push.transform = obj.transform2d.mat2();
 
-            vkCmdPushConstants(commandBuffer, pipelineLayout, VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT, 0, sizeof(SimplePushConstantData), &push);
-
+            vkCmdPushConstants(
+                commandBuffer,
+                pipelineLayout,
+                VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT,
+                0,
+                sizeof(SimplePushConstantData),
+                &push);
             obj.model->bind(commandBuffer);
             obj.model->draw(commandBuffer);
         }
     }
+
 }

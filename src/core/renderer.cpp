@@ -1,31 +1,29 @@
 #include "renderer.hpp"
 
-#include <stdexcept>
 #include <array>
+#include <cassert>
+#include <stdexcept>
 
 namespace ve
 {
-    Renderer::Renderer(Window &window, Device &device) : window{window}, device{device}
+
+    Renderer::Renderer(Window &window, Device &device)
+        : window{window}, device{device}
     {
         recreateSwapChain();
         createCommandBuffers();
     }
 
-    Renderer::~Renderer()
-    {
-        freeCommandBuffers();
-    }
+    Renderer::~Renderer() { freeCommandBuffers(); }
 
     void Renderer::recreateSwapChain()
     {
         auto extent = window.getExtent();
-
         while (extent.width == 0 || extent.height == 0)
         {
             extent = window.getExtent();
             glfwWaitEvents();
         }
-
         vkDeviceWaitIdle(device.device());
 
         if (swapChain == nullptr)
@@ -39,7 +37,7 @@ namespace ve
 
             if (!oldSwapChain->compareSwapFormats(*swapChain.get()))
             {
-                throw std::runtime_error("Swap chain image(or depth) format has changed");
+                throw std::runtime_error("Swap chain image(or depth) format has changed!");
             }
         }
     }
@@ -54,24 +52,28 @@ namespace ve
         allocInfo.commandPool = device.getCommandPool();
         allocInfo.commandBufferCount = static_cast<uint32_t>(commandBuffers.size());
 
-        if (vkAllocateCommandBuffers(device.device(), &allocInfo, commandBuffers.data()) != VK_SUCCESS)
+        if (vkAllocateCommandBuffers(device.device(), &allocInfo, commandBuffers.data()) !=
+            VK_SUCCESS)
         {
-            throw std::runtime_error("Failed to create command buffers");
+            throw std::runtime_error("failed to allocate command buffers!");
         }
     }
 
     void Renderer::freeCommandBuffers()
     {
-        vkFreeCommandBuffers(device.device(), device.getCommandPool(), static_cast<uint32_t>(commandBuffers.size()), commandBuffers.data());
+        vkFreeCommandBuffers(
+            device.device(),
+            device.getCommandPool(),
+            static_cast<uint32_t>(commandBuffers.size()),
+            commandBuffers.data());
         commandBuffers.clear();
     }
 
     VkCommandBuffer Renderer::beginFrame()
     {
-        assert(!isFrameStarted && "Cannot call begin frame while already in progress");
+        assert(!isFrameStarted && "Can't call beginFrame while already in progress");
 
         auto result = swapChain->acquireNextImage(&currentImageIndex);
-
         if (result == VK_ERROR_OUT_OF_DATE_KHR)
         {
             recreateSwapChain();
@@ -80,46 +82,41 @@ namespace ve
 
         if (result != VK_SUCCESS && result != VK_SUBOPTIMAL_KHR)
         {
-            throw std::runtime_error("Failed to acquire swap chain image");
+            throw std::runtime_error("failed to acquire swap chain image!");
         }
 
         isFrameStarted = true;
 
         auto commandBuffer = getCurrentCommandBuffer();
-
         VkCommandBufferBeginInfo beginInfo{};
         beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
 
         if (vkBeginCommandBuffer(commandBuffer, &beginInfo) != VK_SUCCESS)
         {
-            throw std::runtime_error("Failed to begin recording command buffer");
+            throw std::runtime_error("failed to begin recording command buffer!");
         }
-
         return commandBuffer;
     }
 
     void Renderer::endFrame()
     {
-        assert(isFrameStarted && "Cannot call end frame while not in progress");
-
+        assert(isFrameStarted && "Can't call endFrame while frame is not in progress");
         auto commandBuffer = getCurrentCommandBuffer();
-
         if (vkEndCommandBuffer(commandBuffer) != VK_SUCCESS)
         {
-            throw std::runtime_error("Failed to record command buffer");
+            throw std::runtime_error("failed to record command buffer!");
         }
 
         auto result = swapChain->submitCommandBuffers(&commandBuffer, &currentImageIndex);
-
-        if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || window.wasWindowResized())
+        if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR ||
+            window.wasWindowResized())
         {
             window.resetWindowResizedFlag();
             recreateSwapChain();
         }
-
-        if (result != VK_SUCCESS)
+        else if (result != VK_SUCCESS)
         {
-            throw std::runtime_error("Failed to present swap chain image");
+            throw std::runtime_error("failed to present swap chain image!");
         }
 
         isFrameStarted = false;
@@ -128,8 +125,10 @@ namespace ve
 
     void Renderer::beginSwapChainRenderPass(VkCommandBuffer commandBuffer)
     {
-        assert(isFrameStarted && "Cannot call beginSwapChainRenderPass if frame is not in progress");
-        assert(commandBuffer == getCurrentCommandBuffer() && "Cannot begin render pass on command buffer from a different frame");
+        assert(isFrameStarted && "Can't call beginSwapChainRenderPass if frame is not in progress");
+        assert(
+            commandBuffer == getCurrentCommandBuffer() &&
+            "Can't begin render pass on command buffer from a different frame");
 
         VkRenderPassBeginInfo renderPassInfo{};
         renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
@@ -142,7 +141,6 @@ namespace ve
         std::array<VkClearValue, 2> clearValues{};
         clearValues[0].color = {0.01f, 0.01f, 0.01f, 1.0f};
         clearValues[1].depthStencil = {1.0f, 0};
-
         renderPassInfo.clearValueCount = static_cast<uint32_t>(clearValues.size());
         renderPassInfo.pClearValues = clearValues.data();
 
@@ -162,9 +160,11 @@ namespace ve
 
     void Renderer::endSwapChainRenderPass(VkCommandBuffer commandBuffer)
     {
-        assert(isFrameStarted && "Cannot call endSwapChainRenderPass if frame is not in progress");
-        assert(commandBuffer == getCurrentCommandBuffer() && "Cannot end render pass on command buffer from a different frame");
-
+        assert(isFrameStarted && "Can't call endSwapChainRenderPass if frame is not in progress");
+        assert(
+            commandBuffer == getCurrentCommandBuffer() &&
+            "Can't end render pass on command buffer from a different frame");
         vkCmdEndRenderPass(commandBuffer);
     }
+
 }

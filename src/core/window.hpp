@@ -2,14 +2,14 @@
 
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
-#include <string>
 
+#include <string>
 namespace ve
 {
     class Window
     {
     public:
-        Window(int, int, std::string);
+        Window(int w, int h, std::string name);
         ~Window();
 
         Window(const Window &) = delete;
@@ -24,13 +24,13 @@ namespace ve
 
     private:
         static void framebufferResizeCallback(GLFWwindow *window, int width, int height);
-        void initialize();
+        void initWindow();
 
         int width;
         int height;
         bool framebufferResized = false;
 
-        std::string name;
+        std::string windowName;
         GLFWwindow *window;
     };
 }

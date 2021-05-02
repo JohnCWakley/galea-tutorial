@@ -6,21 +6,21 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/constants.hpp>
 
-#include <stdexcept>
 #include <array>
+#include <cassert>
+#include <stdexcept>
 
 namespace ve
 {
-    App::App()
-    {
-        loadGameObjects();
-    }
+
+    App::App() { loadGameObjects(); }
 
     App::~App() {}
 
     void App::run()
     {
         SimpleRenderSystem simpleRenderSystem{device, renderer.getSwapChainRenderPass()};
+
         while (!window.shouldClose())
         {
             glfwPollEvents();
@@ -55,4 +55,5 @@ namespace ve
 
         gameObjects.push_back(std::move(triangle));
     }
+
 }

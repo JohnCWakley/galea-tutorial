@@ -22,7 +22,7 @@ namespace ve
             static std::vector<VkVertexInputAttributeDescription> getAttributeDescriptions();
         };
 
-        Model(Device &, const std::vector<Vertex> &);
+        Model(Device &device, const std::vector<Vertex> &vertices);
         ~Model();
 
         Model(const Model &) = delete;
@@ -36,7 +36,7 @@ namespace ve
 
         Device &device;
         VkBuffer vertexBuffer;
-        VkDeviceMemory vertextBufferMemory;
+        VkDeviceMemory vertexBufferMemory;
         uint32_t vertexCount;
     };
 }
