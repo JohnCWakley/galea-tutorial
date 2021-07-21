@@ -22,6 +22,7 @@ namespace ve
     {
         SimpleRenderSystem simpleRenderSystem{device, renderer.getSwapChainRenderPass()};
         Camera camera{};
+        camera.setViewDirection(glm::vec3{0.f}, glm::vec3{0.f, 0.f, 1.f});
 
         while (!window.shouldClose())
         {
