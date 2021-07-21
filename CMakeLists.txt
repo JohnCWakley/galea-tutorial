@@ -36,6 +36,17 @@ if(NOT glm_POPULATED)
     add_subdirectory(${glm_SOURCE_DIR} ${glm_BINARY_DIR})
 endif()
 
+# FETCH SPDLOG:
+FetchContent_Declare(spdlog
+    GIT_REPOSITORY https://github.com/gabime/spdlog
+    GIT_TAG v1.9.0
+)
+
+if (NOT spdlog_POPULATED)
+    FetchContent_Populate(spdlog)
+    add_subdirectory(${spdlog_SOURCE_DIR} ${spdlog_BINARY_DIR})
+endif()
+
 # FIND VULKAN:
 find_package(Vulkan REQUIRED)
 
@@ -44,8 +55,9 @@ add_executable(${PROJECT_NAME} ${sources})
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${glfw_SOURCE_DIR}/include)
 target_include_directories(${PROJECT_NAME} PRIVATE ${glm_SOURCE_DIR})
+target_include_directories(${PROJECT_NAME} PRIVATE ${spdlog_SOURCE_DIR})
 
-target_link_libraries(${PROJECT_NAME} glfw pthread Vulkan::Vulkan)
+target_link_libraries(${PROJECT_NAME} glfw spdlog pthread Vulkan::Vulkan)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

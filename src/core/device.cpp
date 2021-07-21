@@ -1,8 +1,7 @@
 #include "device.hpp"
 
-// std headers
+#include <spdlog/spdlog.h>
 #include <cstring>
-#include <iostream>
 #include <set>
 #include <unordered_set>
 
@@ -16,7 +15,7 @@ namespace ve
         const VkDebugUtilsMessengerCallbackDataEXT *pCallbackData,
         void *pUserData)
     {
-        std::cerr << "validation layer: " << pCallbackData->pMessage << std::endl;
+        spdlog::error("validation layer: {}", pCallbackData->pMessage);
 
         return VK_FALSE;
     }
@@ -133,7 +132,7 @@ namespace ve
         {
             throw std::runtime_error("failed to find GPUs with Vulkan support!");
         }
-        std::cout << "Device count: " << deviceCount << std::endl;
+        spdlog::debug("Device count: {}", deviceCount);
         std::vector<VkPhysicalDevice> devices(deviceCount);
         vkEnumeratePhysicalDevices(instance, &deviceCount, devices.data());
 
@@ -152,7 +151,7 @@ namespace ve
         }
 
         vkGetPhysicalDeviceProperties(physicalDevice, &properties);
-        std::cout << "physical device: " << properties.deviceName << std::endl;
+        spdlog::debug("physical device: {}", properties.deviceName);
     }
 
     void Device::createLogicalDevice()
@@ -324,19 +323,19 @@ namespace ve
         std::vector<VkExtensionProperties> extensions(extensionCount);
         vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, extensions.data());
 
-        std::cout << "available extensions:" << std::endl;
+        spdlog::debug("available extensions:");
         std::unordered_set<std::string> available;
         for (const auto &extension : extensions)
         {
-            std::cout << "\t" << extension.extensionName << std::endl;
+            spdlog::debug("\t{}", extension.extensionName);
             available.insert(extension.extensionName);
         }
 
-        std::cout << "required extensions:" << std::endl;
+        spdlog::debug("required extensions:");
         auto requiredExtensions = getRequiredExtensions();
         for (const auto &required : requiredExtensions)
         {
-            std::cout << "\t" << required << std::endl;
+            spdlog::debug("\t{}", required);
             if (available.find(required) == available.end())
             {
                 throw std::runtime_error("Missing required glfw extension");
