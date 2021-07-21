@@ -1,5 +1,6 @@
 #include "app.hpp"
 
+#include "input.hpp"
 #include "keyboard_movement_controller.hpp"
 #include "camera.hpp"
 #include "simple_render_system.hpp"
@@ -9,6 +10,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/constants.hpp>
 
+#include <spdlog/spdlog.h>
 #include <array>
 #include <chrono>
 #include <cassert>
@@ -32,6 +34,8 @@ namespace ve
         auto viewerObject = GameObject::createGameObject();
         KeyboardMovementController cameraController{};
 
+        Input input{window.getWindow()};
+        
         auto currentTime = std::chrono::high_resolution_clock::now();
 
         while (!window.shouldClose())
