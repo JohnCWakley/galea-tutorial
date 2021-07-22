@@ -1,3 +1,11 @@
+/**
+ * The majority of this code was adapted from:
+ * 
+ * https://gist.github.com/rioki/1290004d7505380f2b1d
+ * https://gist.github.com/martinfinke/a636dcddbcf112344b59
+ * 
+**/
+
 #pragma once
 
 #include <functional>
@@ -7,9 +15,6 @@
 #include <string>
 #include <iostream>
 
-template <typename... Args>
-using Func = std::function<void(Args...)>;
-
 class EventEmitter
 {
 public:
@@ -17,27 +22,39 @@ public:
     ~EventEmitter() {}
 
     template <typename... Args>
-    void addListener(const std::string &name, std::function<void(Args...)> cb)
+    std::string addListener(const std::string &name, std::function<void(Args...)> cb)
     {
-        std::string listener_id = name + "_" + std::to_string(++lastListener);
-        listeners.insert(std::make_pair(name, std::make_shared<Listener<Args...>>(listener_id, cb)));
+        std::string listener_name = name + "_" + std::to_string(++lastListener);
+        listeners.insert(std::make_pair(name, std::make_shared<Listener<Args...>>(listener_name, cb)));
+        return listener_name;
     }
 
-    void addListener(const std::string &name, std::function<void()> cb)
+    std::string addListener(const std::string &name, std::function<void()> cb)
     {
-        std::string listener_id = name + "_" + std::to_string(++lastListener);
-        listeners.insert(std::make_pair(name, std::make_shared<Listener<>>(listener_id, cb)));
+        std::string listener_name = name + "_" + std::to_string(++lastListener);
+        listeners.insert(std::make_pair(name, std::make_shared<Listener<>>(listener_name, cb)));
+        return listener_name;
     }
 
     template <typename Lambda>
-    void addListener(const std::string &name, Lambda cb)
+    std::string addListener(const std::string &name, Lambda cb)
     {
-        addListener(name, make_function(cb));
+        return addListener(name, make_function(cb));
     }
 
-    void removeListener(const std::string &name)
+    void removeListener(const std::string &listener_name)
     {
-        std::cout << "removeListener: " << name << std::endl;
+        auto i = std::find_if(listeners.begin(), listeners.end(), [&](std::pair<std::string, std::shared_ptr<ListenerBase>> p)
+                              { return p.second->name == listener_name; });
+
+        if (i != listeners.end())
+        {
+            listeners.erase(i);
+        }
+        else
+        {
+            throw std::invalid_argument("EventEmitter::remove_listener: Invalid listener name.");
+        }
     }
 
     template <typename... Args>
@@ -85,7 +102,6 @@ private:
     unsigned int lastListener;
     std::multimap<std::string, std::shared_ptr<ListenerBase>> listeners;
 
-    // http://stackoverflow.com/a/21000981
     template <typename T>
     struct function_traits : public function_traits<decltype(&T::operator())>
     {
