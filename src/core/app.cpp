@@ -76,6 +76,8 @@ namespace ve
                 renderer.endSwapChainRenderPass(commandBuffer);
                 renderer.endFrame();
             }
+
+            input.update();
         }
 
         vkDeviceWaitIdle(device.device());

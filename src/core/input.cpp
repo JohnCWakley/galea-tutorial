@@ -15,18 +15,10 @@ namespace ve
         glfwSetCursorPosCallback(window, &Input::cursor_position_callback);
     }
 
-    void Input::setEventHandler()
+    void Input::update()
     {
-    }
-
-    bool Input::getKeyDown(int key)
-    {
-        return keyDown[key];
-    }
-
-    bool Input::getButtonDown(int button)
-    {
-        return buttonDown[button];
+        mousePositionOffset.x = 0.f;
+        mousePositionOffset.y = 0.f;
     }
 
     void Input::key_callback(GLFWwindow *window, int key, int scancode, int action, int mods)

@@ -6,10 +6,16 @@ namespace ve
     {
         glm::vec3 rotate{0};
 
-        if (input.getKeyDown(keys.lookRight)) rotate.y += 1.f;
-        if (input.getKeyDown(keys.lookLeft)) rotate.y -= 1.f;
-        if (input.getKeyDown(keys.lookUp)) rotate.x += 1.f;
-        if (input.getKeyDown(keys.lookDown)) rotate.x -= 1.f;
+        if (input.getButtonDown(GLFW_MOUSE_BUTTON_RIGHT))
+        {
+            rotate.y -= input.getMousePositionOffset().x;
+            rotate.x += input.getMousePositionOffset().y;
+        }
+        else
+        {
+            rotate.y += (float)(input.getKeyDown(keys.lookRight) - input.getKeyDown(keys.lookLeft));
+            rotate.x += (float)(input.getKeyDown(keys.lookUp) - input.getKeyDown(keys.lookDown));
+        }
 
         if (glm::dot(rotate, rotate) > std::numeric_limits<float>::epsilon())
         {
@@ -26,12 +32,9 @@ namespace ve
 
         glm::vec3 moveDir{0.f};
 
-        if (input.getKeyDown(keys.moveForward)) moveDir += forwardDir;
-        if (input.getKeyDown(keys.moveBackward)) moveDir -= forwardDir;
-        if (input.getKeyDown(keys.moveRight)) moveDir += rightDir;
-        if (input.getKeyDown(keys.moveLeft)) moveDir -= rightDir;
-        if (input.getKeyDown(keys.moveUp)) moveDir += upDir;
-        if (input.getKeyDown(keys.moveDown)) moveDir -= upDir;
+        moveDir += forwardDir * (float)(input.getKeyDown(keys.moveForward) - input.getKeyDown(keys.moveBackward));
+        moveDir += rightDir * (float)(input.getKeyDown(keys.moveRight) - input.getKeyDown(keys.moveLeft));
+        moveDir += upDir * (float)(input.getKeyDown(keys.moveUp) - input.getKeyDown(keys.moveDown));
 
         if (glm::dot(moveDir, moveDir) > std::numeric_limits<float>::epsilon())
         {

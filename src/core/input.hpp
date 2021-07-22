@@ -21,9 +21,12 @@ namespace ve
     public:
         Input(GLFWwindow *window);
 
-        void setEventHandler();
-        bool getKeyDown(int key);
-        bool getButtonDown(int button);
+        bool getKeyDown(int key) { return keyDown[key]; }
+        bool getButtonDown(int button) { return buttonDown[button]; }
+        glm::vec2 getMousePosition() { return mousePosition; }
+        glm::vec2 getMousePositionOffset() { return mousePositionOffset; }
+
+        void update();
 
     private:
         static void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods);
