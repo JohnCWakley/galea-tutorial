@@ -2,14 +2,14 @@
 
 namespace ve
 {
-    void KeyboardMovementController::moveInPlaneXZ(GLFWwindow* window, float dt, GameObject &gameObject)
+    void KeyboardMovementController::moveInPlaneXZ(Input input, float dt, GameObject &gameObject)
     {
         glm::vec3 rotate{0};
 
-        if (glfwGetKey(window, keys.lookRight) == GLFW_PRESS) rotate.y += 1.f;
-        if (glfwGetKey(window, keys.lookLeft) == GLFW_PRESS) rotate.y -= 1.f;
-        if (glfwGetKey(window, keys.lookUp) == GLFW_PRESS) rotate.x += 1.f;
-        if (glfwGetKey(window, keys.lookDown) == GLFW_PRESS) rotate.x -= 1.f;
+        if (input.getKeyDown(keys.lookRight)) rotate.y += 1.f;
+        if (input.getKeyDown(keys.lookLeft)) rotate.y -= 1.f;
+        if (input.getKeyDown(keys.lookUp)) rotate.x += 1.f;
+        if (input.getKeyDown(keys.lookDown)) rotate.x -= 1.f;
 
         if (glm::dot(rotate, rotate) > std::numeric_limits<float>::epsilon())
         {
@@ -26,12 +26,12 @@ namespace ve
 
         glm::vec3 moveDir{0.f};
 
-        if (glfwGetKey(window, keys.moveForward) == GLFW_PRESS) moveDir += forwardDir;
-        if (glfwGetKey(window, keys.moveBackward) == GLFW_PRESS) moveDir -= forwardDir;
-        if (glfwGetKey(window, keys.moveRight) == GLFW_PRESS) moveDir += rightDir;
-        if (glfwGetKey(window, keys.moveLeft) == GLFW_PRESS) moveDir -= rightDir;
-        if (glfwGetKey(window, keys.moveUp) == GLFW_PRESS) moveDir += upDir;
-        if (glfwGetKey(window, keys.moveDown) == GLFW_PRESS) moveDir -= upDir;
+        if (input.getKeyDown(keys.moveForward)) moveDir += forwardDir;
+        if (input.getKeyDown(keys.moveBackward)) moveDir -= forwardDir;
+        if (input.getKeyDown(keys.moveRight)) moveDir += rightDir;
+        if (input.getKeyDown(keys.moveLeft)) moveDir -= rightDir;
+        if (input.getKeyDown(keys.moveUp)) moveDir += upDir;
+        if (input.getKeyDown(keys.moveDown)) moveDir -= upDir;
 
         if (glm::dot(moveDir, moveDir) > std::numeric_limits<float>::epsilon())
         {

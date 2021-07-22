@@ -27,6 +27,10 @@ namespace ve
         glfwSetFramebufferSizeCallback(window, framebufferResizeCallback);
     }
 
+    void Window::close() {
+        glfwSetWindowShouldClose(window, 1);
+    }
+
     void Window::createWindowSurface(VkInstance instance, VkSurfaceKHR *surface)
     {
         if (glfwCreateWindowSurface(instance, window, nullptr, surface) != VK_SUCCESS)

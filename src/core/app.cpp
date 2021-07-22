@@ -35,6 +35,19 @@ namespace ve
         KeyboardMovementController cameraController{};
 
         Input input{window.getWindow()};
+
+        input.setKeyPressedHandler([this](int key, int mods) {
+            switch(key) {
+                case GLFW_KEY_ESCAPE:
+                    window.close();
+                    break;
+                default: break;
+            }
+        });
+
+        input.setButtonClickedHandler([this](int button, int mods) {
+            spdlog::debug("ButtonClicked: {}", button);
+        });
         
         auto currentTime = std::chrono::high_resolution_clock::now();
 
@@ -47,7 +60,7 @@ namespace ve
             frameTime = glm::min(frameTime, MAX_FRAME_TIME);
             currentTime = newTime;
 
-            cameraController.moveInPlaneXZ(window.getWindow(), frameTime, viewerObject);
+            cameraController.moveInPlaneXZ(input, frameTime, viewerObject);
             camera.setViewYXZ(viewerObject.transform.translation, viewerObject.transform.rotation);
             
             float aspect = renderer.getAspectRatio();
