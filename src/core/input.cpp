@@ -24,14 +24,9 @@ namespace ve
         return keyDown[key];
     }
 
-    void Input::setKeyPressedHandler(KeyPressedHandlerFunction f)
+    bool Input::getButtonDown(int button)
     {
-        pressedHandler = f;
-    }
-
-    void Input::setButtonClickedHandler(ButtonClickedHandlerFunction f)
-    {
-        clickedHandler = f;
+        return buttonDown[button];
     }
 
     void Input::key_callback(GLFWwindow *window, int key, int scancode, int action, int mods)
@@ -65,25 +60,22 @@ namespace ve
 
         if (action == GLFW_PRESS)
         {
-            spdlog::debug("key down: {0}, time: {1}", key, now);
+            spdlog::debug("key down: {}", key);
             keyDown[key] = true;
             keyDownTime[key] = now;
         }
         else if (action == GLFW_RELEASE)
         {
-            auto elapsed = now - keyDownTime[key];
-            spdlog::debug("key up: {0}, time: {1}, now: {2}, elapsed: {3}", key, keyDownTime[key], now, elapsed);
-
             keyDown[key] = false;
 
             if (now - keyDownTime[key] < downTimeThreshold)
             {
                 spdlog::debug("key pressed: {}", key);
-
-                if (pressedHandler)
-                {
-                    pressedHandler(key, mods);
-                }
+                emit("key_pressed", key, mods);
+            }
+            else
+            {
+                spdlog::debug("key up: {}", key);
             }
 
             keyDownTime[key] = 0;
@@ -96,24 +88,22 @@ namespace ve
 
         if (action == GLFW_PRESS)
         {
-            spdlog::debug("button down: {0}, time: {1}", button, now);
+            spdlog::debug("button down: {}", button);
             buttonDown[button] = true;
             buttonDownTime[button] = now;
         }
         else if (action == GLFW_RELEASE)
         {
-            auto elapsed = now - buttonDownTime[button];
-            spdlog::debug("button up: {0}, time: {1}, now: {2}, elapsed: {3}", button, buttonDownTime[button], now, elapsed);
-
             buttonDown[button] = false;
 
             if (now - buttonDownTime[button] < downTimeThreshold)
             {
                 spdlog::debug("button clicked: {}", button);
-                
-                if (clickedHandler) {
-                    clickedHandler(button, mods);
-                }
+                emit("button_clicked", button, mods);
+            }
+            else
+            {
+                spdlog::debug("button up: {}", button);
             }
 
             buttonDownTime[button] = 0;
@@ -133,5 +123,11 @@ namespace ve
         //     "onMouseMoveEvent: xpos: {0}, ypos: {1}",
         //     xpos, ypos
         // );
+        mousePositionOffset.x = mousePosition.x - xpos;
+        mousePositionOffset.y = mousePosition.y - ypos;
+        mousePosition.x = xpos;
+        mousePosition.y = ypos;
+
+        emit("mouse_moved", mousePosition, mousePositionOffset);
     }
 }

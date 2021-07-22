@@ -1,5 +1,6 @@
 #pragma once
 
+#include "event_emitter.hpp"
 #include "window.hpp"
 
 #define GLM_FORCE_RADIANS
@@ -15,16 +16,14 @@ namespace ve
     using KeyPressedHandlerFunction = std::function<void(int, int)>;
     using ButtonClickedHandlerFunction = std::function<void(int, int)>;
 
-    class Input
+    class Input : public EventEmitter
     {
     public:
         Input(GLFWwindow *window);
 
         void setEventHandler();
         bool getKeyDown(int key);
-
-        void setKeyPressedHandler(KeyPressedHandlerFunction);
-        void setButtonClickedHandler(ButtonClickedHandlerFunction);
+        bool getButtonDown(int button);
 
     private:
         static void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods);
@@ -46,8 +45,6 @@ namespace ve
         long long buttonDownTime[GLFW_MOUSE_BUTTON_LAST + 1] = {0};
 
         glm::vec2 mousePosition{0.f};
-
-        KeyPressedHandlerFunction pressedHandler;
-        ButtonClickedHandlerFunction clickedHandler;
+        glm::vec2 mousePositionOffset{0.f};
     };
 }

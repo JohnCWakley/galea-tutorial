@@ -35,18 +35,21 @@ namespace ve
         KeyboardMovementController cameraController{};
 
         Input input{window.getWindow()};
-
-        input.setKeyPressedHandler([this](int key, int mods) {
-            switch(key) {
-                case GLFW_KEY_ESCAPE:
-                    window.close();
-                    break;
-                default: break;
+        
+        input.addListener("key_pressed", [this](int key, int mods) {
+            if (key == GLFW_KEY_ESCAPE) { // TODO: need to check UI focus to close windows before quitting app
+                window.close();
             }
         });
 
-        input.setButtonClickedHandler([this](int button, int mods) {
-            spdlog::debug("ButtonClicked: {}", button);
+        // input.addListener("button_clicked", [this](int button, int mods) {
+        //     spdlog::debug("button_clicked: {}", button);
+        // });
+
+        input.addListener("mouse_moved", [&](glm::vec2 position, glm::vec2 offset) {
+            if (input.getButtonDown(GLFW_MOUSE_BUTTON_LEFT)) {
+                spdlog::debug("mouse_moved: px: {0}, py: {1}, ox: {2}, oy: {3}", position.x, position.y, offset.x, offset.y);
+            }
         });
         
         auto currentTime = std::chrono::high_resolution_clock::now();
