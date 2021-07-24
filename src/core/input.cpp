@@ -1,6 +1,5 @@
 #include "input.hpp"
 
-#include <spdlog/spdlog.h>
 #include <chrono>
 
 namespace ve
@@ -53,12 +52,11 @@ namespace ve
             keyDown[key] = true;
             keyDownTime[key] = now;
 
-            emit("event: key_down", key, mods);
+            emit("key_down", key, mods);
         }
         else if (action == GLFW_RELEASE)
         {
             keyDown[key] = false;
-            keyDownTime[key] = 0;
 
             if (now - keyDownTime[key] < downTimeThreshold)
             {
@@ -68,6 +66,8 @@ namespace ve
             {
                 emit("key_up", key, mods);
             }
+
+            keyDownTime[key] = 0;
         }
     }
 
@@ -85,7 +85,6 @@ namespace ve
         else if (action == GLFW_RELEASE)
         {
             buttonDown[button] = false;
-            buttonDownTime[button] = 0;
 
             if (now - buttonDownTime[button] < downTimeThreshold)
             {
@@ -95,6 +94,8 @@ namespace ve
             {
                 emit("button_up", button, mods);
             }
+            
+            buttonDownTime[button] = 0;
         }
     }
 

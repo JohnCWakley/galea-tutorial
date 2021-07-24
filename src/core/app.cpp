@@ -50,9 +50,6 @@ namespace ve
         input.addListener("button_clicked", [](int button, int mods)
                           { spdlog::debug("button_clicked: {}", button); });
 
-        input.addListener("button_clicked", [](int button, int mods)
-                          { spdlog::debug("button_clicked: {}", button); });
-
         input.addListener("wheel_left", [](int offset)
                           { spdlog::debug("wheel_left: {}", offset); });
 
