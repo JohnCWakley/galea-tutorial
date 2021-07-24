@@ -49,7 +49,7 @@ namespace ve
             swapChain = nullptr;
         }
 
-        for (std::vector<VkImage_T*>::size_type i = 0; i < depthImages.size(); i++)
+        for (std::vector<VkImage_T *>::size_type i = 0; i < depthImages.size(); i++)
         {
             vkDestroyImageView(device.device(), depthImageViews[i], nullptr);
             vkDestroyImage(device.device(), depthImages[i], nullptr);
@@ -334,7 +334,7 @@ namespace ve
         depthImageMemorys.resize(imageCount());
         depthImageViews.resize(imageCount());
 
-        for (std::vector<VkImage_T*>::size_type i = 0; i < depthImages.size(); i++)
+        for (std::vector<VkImage_T *>::size_type i = 0; i < depthImages.size(); i++)
         {
             VkImageCreateInfo imageInfo{};
             imageInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
@@ -430,11 +430,13 @@ namespace ve
             }
         }
 
-        for (const auto &availablePresentMode : availablePresentModes) {
-          if (availablePresentMode == VK_PRESENT_MODE_IMMEDIATE_KHR) {
-            spdlog::debug("Present mode: Immediate");
-            return availablePresentMode;
-          }
+        for (const auto &availablePresentMode : availablePresentModes)
+        {
+            if (availablePresentMode == VK_PRESENT_MODE_IMMEDIATE_KHR)
+            {
+                spdlog::debug("Present mode: Immediate");
+                return availablePresentMode;
+            }
         }
 
         spdlog::debug("Present mode: V-Sync");

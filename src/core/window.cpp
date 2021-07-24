@@ -27,7 +27,8 @@ namespace ve
         glfwSetFramebufferSizeCallback(window, framebufferResizeCallback);
     }
 
-    void Window::close() {
+    void Window::close()
+    {
         glfwSetWindowShouldClose(window, 1);
     }
 
