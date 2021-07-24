@@ -1,5 +1,6 @@
 #pragma once
 
+#include "input.hpp"
 #include "device.hpp"
 #include "game_object.hpp"
 #include "renderer.hpp"
@@ -31,6 +32,7 @@ namespace ve
         Window window{WIDTH, HEIGHT, "Vulkan Tutorial"};
         Device device{window};
         Renderer renderer{window, device};
+        Input input{window.getWindow()};
 
         std::vector<GameObject> gameObjects;
     };
