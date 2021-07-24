@@ -7,26 +7,21 @@
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
 #include <glm/glm.hpp>
 
-#include <spdlog/spdlog.h>
 #include <functional>
 #include <map>
 
 namespace ve
 {
-    using KeyPressedHandlerFunction = std::function<void(int, int)>;
-    using ButtonClickedHandlerFunction = std::function<void(int, int)>;
-
     class Input : public EventEmitter
     {
     public:
         Input(GLFWwindow *window);
+        ~Input();
 
         bool getKeyDown(int key) { return keyDown[key]; }
         bool getButtonDown(int button) { return buttonDown[button]; }
         glm::vec2 getMousePosition() { return mousePosition; }
         glm::vec2 getMousePositionOffset() { return mousePositionOffset; }
-
-        void update();
 
     private:
         static void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods);

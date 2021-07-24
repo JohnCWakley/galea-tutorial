@@ -2,11 +2,10 @@
 
 #include <spdlog/spdlog.h>
 #include <chrono>
-#include <iostream>
 
 namespace ve
 {
-    Input::Input(GLFWwindow *window)
+    Input::Input(GLFWwindow *window) : EventEmitter()
     {
         glfwSetWindowUserPointer(window, this);
         glfwSetKeyCallback(window, &Input::key_callback);
@@ -15,15 +14,12 @@ namespace ve
         glfwSetCursorPosCallback(window, &Input::cursor_position_callback);
     }
 
-    void Input::update()
-    {
-        mousePositionOffset.x = 0.f;
-        mousePositionOffset.y = 0.f;
-    }
+    Input::~Input() {}
 
     void Input::key_callback(GLFWwindow *window, int key, int scancode, int action, int mods)
     {
-        static_cast<Input *>(glfwGetWindowUserPointer(window))->onKeyboardEvent(key, scancode, action, mods);
+        static_cast<Input *>(glfwGetWindowUserPointer(window))
+            ->onKeyboardEvent(key, scancode, action, mods);
     }
 
     void Input::mouse_button_callback(GLFWwindow *window, int button, int action, int mods)
@@ -43,7 +39,9 @@ namespace ve
 
     long long _now()
     {
-        return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+        return std::chrono::duration_cast<std::chrono::milliseconds>(
+                   std::chrono::system_clock::now().time_since_epoch())
+            .count();
     }
 
     void Input::onKeyboardEvent(int key, int scancode, int action, int mods)
@@ -52,25 +50,24 @@ namespace ve
 
         if (action == GLFW_PRESS)
         {
-            spdlog::debug("key down: {}", key);
             keyDown[key] = true;
             keyDownTime[key] = now;
+
+            emit("event: key_down", key, mods);
         }
         else if (action == GLFW_RELEASE)
         {
             keyDown[key] = false;
+            keyDownTime[key] = 0;
 
             if (now - keyDownTime[key] < downTimeThreshold)
             {
-                spdlog::debug("key pressed: {}", key);
                 emit("key_pressed", key, mods);
             }
             else
             {
-                spdlog::debug("key up: {}", key);
+                emit("key_up", key, mods);
             }
-
-            keyDownTime[key] = 0;
         }
     }
 
@@ -80,41 +77,50 @@ namespace ve
 
         if (action == GLFW_PRESS)
         {
-            spdlog::debug("button down: {}", button);
             buttonDown[button] = true;
             buttonDownTime[button] = now;
+
+            emit("button_down", button, mods);
         }
         else if (action == GLFW_RELEASE)
         {
             buttonDown[button] = false;
+            buttonDownTime[button] = 0;
 
             if (now - buttonDownTime[button] < downTimeThreshold)
             {
-                spdlog::debug("button clicked: {}", button);
                 emit("button_clicked", button, mods);
             }
             else
             {
-                spdlog::debug("button up: {}", button);
+                emit("button_up", button, mods);
             }
-
-            buttonDownTime[button] = 0;
         }
     }
 
     void Input::onMouseWheelEvent(double xoffset, double yoffset)
     {
-        spdlog::debug(
-            "onMouseWheelEvent: xoffset: {0}, yoffset: {1}",
-            xoffset, yoffset);
+        if (xoffset > 0)
+        {
+            emit("wheel_left", xoffset);
+        }
+        else if (xoffset < 0)
+        {
+            emit("wheel_right", xoffset);
+        }
+
+        if (yoffset > 0)
+        {
+            emit("wheel_up", yoffset);
+        }
+        else if (yoffset < 0)
+        {
+            emit("wheel_down", yoffset);
+        }
     }
 
     void Input::onMouseMoveEvent(double xpos, double ypos)
     {
-        // spdlog::debug(
-        //     "onMouseMoveEvent: xpos: {0}, ypos: {1}",
-        //     xpos, ypos
-        // );
         mousePositionOffset.x = mousePosition.x - xpos;
         mousePositionOffset.y = mousePosition.y - ypos;
         mousePosition.x = xpos;

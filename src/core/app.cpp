@@ -24,10 +24,10 @@ namespace ve
         loadGameObjects();
 
         input.addListener("key_down", [](int key, int mods)
-                          { std::cout << "key_down: " << key << std::endl; });
+                          { spdlog::debug("key_down: {}", key); });
 
         input.addListener("key_up", [](int key, int mods)
-                          { std::cout << "key_up: " << key << std::endl; });
+                          { spdlog::debug("key_up: {}", key); });
 
         input.addListener("key_pressed", [this](int key, int mods)
                           {
@@ -37,33 +37,33 @@ namespace ve
                               }
                               else
                               {
-                                  std::cout << "key_pressed: " << key << std::endl;
+                                  spdlog::debug("key_pressed: {}", key);
                               }
                           });
 
         input.addListener("button_down", [](int button, int mods)
-                          { std::cout << "button_down: " << button << std::endl; });
+                          { spdlog::debug("button_down: {}", button); });
 
         input.addListener("button_up", [](int button, int mods)
-                          { std::cout << "button_up: " << button << std::endl; });
+                          { spdlog::debug("button_up: {}", button); });
 
         input.addListener("button_clicked", [](int button, int mods)
-                          { std::cout << "button_clicked: " << button << std::endl; });
+                          { spdlog::debug("button_clicked: {}", button); });
 
         input.addListener("button_clicked", [](int button, int mods)
-                          { std::cout << "button_clicked: " << button << std::endl; });
+                          { spdlog::debug("button_clicked: {}", button); });
 
         input.addListener("wheel_left", [](int offset)
-                          { std::cout << "wheel_left: " << offset << std::endl; });
+                          { spdlog::debug("wheel_left: {}", offset); });
 
         input.addListener("wheel_right", [](int offset)
-                          { std::cout << "wheel_right: " << offset << std::endl; });
+                          { spdlog::debug("wheel_right: {}", offset); });
 
         input.addListener("wheel_up", [](int offset)
-                          { std::cout << "wheel_up: " << offset << std::endl; });
+                          { spdlog::debug("wheel_up: {}", offset); });
 
         input.addListener("wheel_down", [](int offset)
-                          { std::cout << "wheel_down: " << offset << std::endl; });
+                          { spdlog::debug("wheel_down: {}", offset); });
 
         input.addListener("mouse_moved", [this](glm::vec2 position, glm::vec2 offset)
                           {
@@ -111,8 +111,6 @@ namespace ve
                 renderer.endSwapChainRenderPass(commandBuffer);
                 renderer.endFrame();
             }
-
-            input.update();
         }
 
         vkDeviceWaitIdle(device.device());
