@@ -1,7 +1,7 @@
 #pragma once
 
 #include "game_object.hpp"
-#include "input.hpp"
+#include "../input/input.hpp"
 
 namespace ve
 {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "input.hpp"
+#include "../input/input.hpp"
 #include "device.hpp"
 #include "game_object.hpp"
 #include "renderer.hpp"

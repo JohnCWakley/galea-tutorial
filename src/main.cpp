@@ -1,4 +1,4 @@
-#include "core/app.hpp"
+#include "galea/app.hpp"
 #include <cstdlib>
 #include <iostream>
 #include <stdexcept>
