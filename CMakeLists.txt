@@ -12,7 +12,7 @@ file(GLOB_RECURSE sources ${PROJECT_SOURCE_DIR}/src/*.cpp)
 # FETCH GLFW
 FetchContent_Declare(glfw
     GIT_REPOSITORY https://github.com/glfw/glfw.git
-    GIT_TAG 3.3.3
+    GIT_TAG 3.3.4
 )
 
 if(NOT glfw_POPULATED)
