@@ -2,7 +2,7 @@
 
 namespace ve
 {
-    void KeyboardMovementController::moveInPlaneXZ(Input input, float dt, GameObject &gameObject)
+    void KeyboardMovementController::moveInPlaneXZ(ezi::Input input, float dt, GameObject &gameObject)
     {
         glm::vec3 rotate{0};
 

@@ -23,6 +23,8 @@ namespace ve
     {
         loadGameObjects();
 
+        input.init(window.getWindow());
+
         input.addListener("key_down", [](int key, int mods)
                           { spdlog::debug("key_down: {}", key); });
 

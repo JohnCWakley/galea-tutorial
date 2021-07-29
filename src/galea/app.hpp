@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../input/input.hpp"
+#include "../third_party/ezi/input.hpp"
 #include "device.hpp"
 #include "game_object.hpp"
 #include "renderer.hpp"
@@ -32,7 +32,7 @@ namespace ve
         Window window{WIDTH, HEIGHT, "Vulkan Tutorial"};
         Device device{window};
         Renderer renderer{window, device};
-        Input input{window.getWindow()};
+        ezi::Input input{};
 
         std::vector<GameObject> gameObjects;
     };

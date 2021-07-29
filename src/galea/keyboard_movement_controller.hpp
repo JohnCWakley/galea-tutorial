@@ -1,7 +1,7 @@
 #pragma once
 
 #include "game_object.hpp"
-#include "../input/input.hpp"
+#include "../third_party/ezi/input.hpp"
 
 namespace ve
 {
@@ -22,7 +22,7 @@ namespace ve
             int lookDown = GLFW_KEY_DOWN;
         };
 
-        void moveInPlaneXZ(Input input, float dt, GameObject &gameObject);
+        void moveInPlaneXZ(ezi::Input input, float dt, GameObject &gameObject);
 
         KeyMappings keys{};
         float moveSpeed{3.f};
