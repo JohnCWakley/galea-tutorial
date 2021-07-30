@@ -2,7 +2,7 @@
 
 #include "device.hpp"
 
-#include <vulkan/vulkan.h>
+#include <vulkan/vulkan.hpp>
 
 #include <memory>
 #include <string>
