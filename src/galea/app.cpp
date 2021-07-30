@@ -66,7 +66,7 @@ namespace ve
 
         input.addListener("mouse_moved", [this](glm::vec2 position, glm::vec2 offset)
                           {
-                              if (input.getButtonDown(GLFW_MOUSE_BUTTON_LEFT))
+                              if (input.isMouseButtonDown(GLFW_MOUSE_BUTTON_LEFT))
                               {
                                   std::cout << "mouse_moved: px: " << position.x << ", py: " << position.y
                                             << ", ox: " << offset.x << ", oy: " << offset.y << std::endl;
