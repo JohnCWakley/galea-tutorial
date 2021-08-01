@@ -13,11 +13,15 @@ if (WIN32)
     target_include_directories(${PROJECT_NAME} PUBLIC
         "C:\\TDM-GCC-64\\x86_64-w64-mingw32\\include"
         "C:\\VulkanSDK\\1.2.182.0\\Include"
+        "C:\\SDKs\\glfw\\include"
+        "C:\\SDKs\\glm\\"
+        "C:\\SDKs\\spdlog\\include"
     )
 
     target_link_directories(${PROJECT_NAME} PUBLIC
         "C:\\TDM-GCC-64\\x86_64-w64-mingw32\\lib"
         "C:\\VulkanSDK\\1.2.182.0\\Lib"
+        "C:\\SDKs\\glfw\\lib-mingw-w64"
     )
 
     target_link_libraries(${PROJECT_NAME} glfw3 vulkan-1)

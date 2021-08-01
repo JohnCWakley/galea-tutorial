@@ -5,8 +5,10 @@
             "includePath": [
                 "C:\\TDM-GCC-64\\x86_64-w64-mingw32\\include",
                 "${VULKAN_SDK}\\Include",
-                "${USERPROFILE}\\dev\\libs\\include",
-                "${workspaceFolder}\\**"
+                "${workspaceFolder}\\**",
+                "C:\\SDKs\\glfw\\include",
+                "C:\\SDKs\\glm\\",
+                "C:\\SDKs\\spdlog\\include"
             ],
             "defines": [
                 "_DEBUG",
