@@ -9,6 +9,7 @@ This is just a repo to hold my code for learning the Vulkan API. I am following 
 * [spdlog](https://github.com/gabime/spdlog)
 
 #### Windows 10/11:
+* Add `%VULKAN_SDK%\Bin` to your PATH environment variable
 * Install [tdm-gcc](https://jmeubank.github.io/tdm-gcc/download/)
 * Unzip and move glfw, glm, and spdlog into `C:\SDKs` folders
   * Be sure to rename the folders like this: `glfw`, `glm`, `spdlog`
@@ -21,9 +22,11 @@ This is just a repo to hold my code for learning the Vulkan API. I am following 
     * `$ sudo eopkg it -c system.devel`
     * `$ sudo eopkg it vulkan vulkan-headers vulkan-tools vulkan-validation-layers glm glfw-devel mesalib-devel spdlog-devel`
 
-### Build, make, and run:
+## Build:
+(For Windows, I use Git Bash)
 * `$ git clone https://github.com/JohnCWakley/vulkan`
 * `$ cd vulkan`
 * `$ . build.sh`
+    * Note the space between `.` and `build.sh` above.
 * `$ make`
-* `$ ./vulkan`
+* `$ ./demo`
