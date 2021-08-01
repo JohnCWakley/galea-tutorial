@@ -24,7 +24,7 @@ else
 fi
 
 echo 
-echo build environment is ready...
+echo build environment is ready, type 'make' and hit 'enter'!
 echo 
 echo $ make
 echo 
