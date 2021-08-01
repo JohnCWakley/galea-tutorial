@@ -1,5 +1,7 @@
-# vulkan
+# galea-tutorial
 This is just a repo to hold my code for learning the Vulkan API. I am following the truly amazing tutorial series by [Brenden Galea](https://www.youtube.com/channel/UC9pXmjxsQHeFH9vgCeRsHcw).
+
+I have also included [spdlog](https://github.com/gabime/spdlog) for logging and my own [EZ Input library](https://github.com/JohnCWakley/ezi), dropped into the `src/third_party/ezi` folder.
 
 ## Setup:
 ### Dependencies:
