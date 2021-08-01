@@ -6,7 +6,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++17 -O2")
 file(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/src/*.cpp)
 
 add_definitions(-DPROJECT_NAME="${PROJECT_NAME}")
-add_definitions(-DPROJECT_VERSION="${VERSION}")
+add_definitions(-DPROJECT_VERSION="${PROJECT_VERSION}")
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 if (WIN32)
