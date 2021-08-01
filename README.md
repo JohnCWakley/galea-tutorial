@@ -1,4 +1,4 @@
-# vulkan
+# galea-tutorial
 This is just a repo to hold my code for learning the Vulkan API. I am following the truly amazing tutorial series by [Brenden Galea](https://www.youtube.com/channel/UC9pXmjxsQHeFH9vgCeRsHcw).
 
 ## Setup:
