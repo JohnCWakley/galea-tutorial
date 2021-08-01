@@ -1,4 +1,4 @@
-#include "galea/app.hpp"
+#include "app.hpp"
 
 #include <cstdlib>
 #include <iostream>
