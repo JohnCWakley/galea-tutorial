@@ -15,11 +15,11 @@ This is just a repo to hold my code for learning the Vulkan API. I am following 
   * Or update the paths in `.vscode/c_cpp_properties.json` and `CMakeLists.txt`
 
 #### Linux:
-* Ubuntu:
-    * `sudo apt install build-essential vulkan-tools libvulkan-dev vulkan-validationlayers-dev spirv-tools libglfw3-dev libglm-dev `
+* Debian/Ubuntu:
+    * `sudo apt install build-essential vulkan-tools libvulkan-dev vulkan-validationlayers-dev spirv-tools libglfw3-dev libglm-dev spdlog`
 * Solus:
     * `$ sudo eopkg it -c system.devel`
-    * 
+    * `$ sudo eopkg it vulkan vulkan-headers vulkan-tools vulkan-validation-layers glm glfw-devel mesalib-devel spdlog-devel`
 
 ### Build, make, and run:
 * `$ git clone https://github.com/JohnCWakley/vulkan`
