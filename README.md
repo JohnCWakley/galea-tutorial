@@ -26,8 +26,8 @@ I have also included [spdlog](https://github.com/gabime/spdlog) for logging and 
 
 ## Build:
 (For Windows, I use Git Bash)
-* `$ git clone https://github.com/JohnCWakley/vulkan`
-* `$ cd vulkan`
+* `$ git clone https://github.com/JohnCWakley/galea-tutorial`
+* `$ cd galea-tutorial`
 * `$ . build.sh`
     * Note the space between `.` and `build.sh` above.
 * `$ make`
