@@ -8,7 +8,8 @@
                 "${workspaceFolder}\\**",
                 "C:\\SDKs\\glfw\\include",
                 "C:\\SDKs\\glm\\",
-                "C:\\SDKs\\spdlog\\include"
+                "C:\\SDKs\\spdlog\\include",
+                "C:\\SDKs\\tiny_obj_loader"
             ],
             "defines": [
                 "_DEBUG",

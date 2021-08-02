@@ -17,6 +17,7 @@ if (WIN32)
         "C:\\SDKs\\glfw\\include"
         "C:\\SDKs\\glm\\"
         "C:\\SDKs\\spdlog\\include"
+        "C:\\SDKs\\tiny_obj_loader"
     )
 
     target_link_directories(${PROJECT_NAME} PUBLIC
