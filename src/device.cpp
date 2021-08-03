@@ -17,7 +17,7 @@ namespace ve
     {
         switch (messageSeverity) {
             case VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT:
-                spdlog::debug("validation layer: {}", pCallbackData->pMessage);
+                // spdlog::debug("validation layer: {}", pCallbackData->pMessage);
                 break;
             case VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT:
                 spdlog::info("validation layer: {}", pCallbackData->pMessage);
