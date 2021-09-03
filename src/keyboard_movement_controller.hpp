@@ -1,7 +1,7 @@
 #pragma once
 
 #include "game_object.hpp"
-#include "third_party/ezi/input.hpp"
+#include <ezi/input.hpp>
 
 namespace ve
 {

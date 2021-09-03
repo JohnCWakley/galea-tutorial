@@ -1,6 +1,6 @@
 #pragma once
 
-#include "third_party/ezi/input.hpp"
+#include <ezi/input.hpp>
 #include "device.hpp"
 #include "game_object.hpp"
 #include "renderer.hpp"

@@ -28,6 +28,7 @@ if (WIN32)
 
     target_link_libraries(${PROJECT_NAME} glfw3 vulkan-1)
 elseif (UNIX)
+    target_include_directories(${PROJECT_NAME} PUBLIC src/third_party)
     target_link_libraries(${PROJECT_NAME} glfw vulkan)
 endif()
 
