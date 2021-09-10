@@ -7,6 +7,7 @@ I have also included my own [EZ Input library](https://github.com/JohnCWakley/ez
 * [Vulkan API](https://vulkan.lunarg.com/)
 * [GLFW](https://www.glfw.org/download)
 * [glm](https://github.com/g-truc/glm)
+* [Tiny Object Loader](https://github.com/tinyobjloader/tinyobjloader) (in `src/third_party` folder)
 
 Update `CMakeLists.txt` and `.vscode/c_cpp_properties.json` files with the location of the dependencies.
 
