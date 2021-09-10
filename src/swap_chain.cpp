@@ -1,6 +1,6 @@
 #include "swap_chain.hpp"
+#include "logger.hpp"
 
-#include <spdlog/spdlog.h>
 #include <array>
 #include <cstdlib>
 #include <cstring>
@@ -425,7 +425,7 @@ namespace ve
         {
             if (availablePresentMode == VK_PRESENT_MODE_MAILBOX_KHR)
             {
-                spdlog::debug("Present mode: Mailbox");
+                log_debug("Present mode: Mailbox");
                 return availablePresentMode;
             }
         }
@@ -434,12 +434,12 @@ namespace ve
         {
             if (availablePresentMode == VK_PRESENT_MODE_IMMEDIATE_KHR)
             {
-                spdlog::debug("Present mode: Immediate");
+                log_debug("Present mode: Immediate");
                 return availablePresentMode;
             }
         }
 
-        spdlog::debug("Present mode: V-Sync");
+        log_debug("Present mode: V-Sync");
         return VK_PRESENT_MODE_FIFO_KHR;
     }
 

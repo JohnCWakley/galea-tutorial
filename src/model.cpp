@@ -1,5 +1,6 @@
 #include "model.hpp"
 #include "utils.hpp"
+#include "logger.hpp"
 
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>
@@ -7,7 +8,6 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/hash.hpp>
 
-#include <spdlog/spdlog.h>
 #include <cassert>
 #include <cstring>
 #include <unordered_map>
@@ -151,7 +151,7 @@ namespace ve
         Builder builder{};
         builder.loadModelOBJ(filepath);
 
-        spdlog::debug("Model::createModelFromFile: vertex count: {}", builder.vertices.size());
+        log_debug("Model::createModelFromFile: vertex count: ", builder.vertices.size());
 
         return std::make_unique<Model>(device, builder);
     }

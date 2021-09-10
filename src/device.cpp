@@ -1,6 +1,6 @@
 #include "device.hpp"
+#include "logger.hpp"
 
-#include <spdlog/spdlog.h>
 #include <cstring>
 #include <set>
 #include <unordered_set>
@@ -17,16 +17,16 @@ namespace ve
     {
         switch (messageSeverity) {
             case VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT:
-                // spdlog::debug("validation layer: {}", pCallbackData->pMessage);
+                // log_debug("validation layer: ", pCallbackData->pMessage);
                 break;
             case VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT:
-                spdlog::info("validation layer: {}", pCallbackData->pMessage);
+                log_info("validation layer: ", pCallbackData->pMessage);
                 break;
             case VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT:
-                spdlog::warn("validation layer: {}", pCallbackData->pMessage);
+                log_warn("validation layer: ", pCallbackData->pMessage);
                 break;
             default: // VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT and above:
-                spdlog::error("validation layer: {}", pCallbackData->pMessage);
+                log_error("validation layer: ", pCallbackData->pMessage);
                 break;
         }
 
@@ -145,7 +145,7 @@ namespace ve
         {
             throw std::runtime_error("failed to find GPUs with Vulkan support!");
         }
-        spdlog::debug("Device count: {}", deviceCount);
+        log_debug("Device count: ", deviceCount);
         std::vector<VkPhysicalDevice> devices(deviceCount);
         vkEnumeratePhysicalDevices(instance, &deviceCount, devices.data());
 
@@ -164,7 +164,7 @@ namespace ve
         }
 
         vkGetPhysicalDeviceProperties(physicalDevice, &properties);
-        spdlog::debug("physical device: {}", properties.deviceName);
+        log_debug("physical device: ", properties.deviceName);
     }
 
     void Device::createLogicalDevice()
@@ -336,19 +336,19 @@ namespace ve
         std::vector<VkExtensionProperties> extensions(extensionCount);
         vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, extensions.data());
 
-        spdlog::debug("available extensions:");
+        log_debug("available extensions:");
         std::unordered_set<std::string> available;
         for (const auto &extension : extensions)
         {
-            spdlog::debug("\t{}", extension.extensionName);
+            log_debug("\t", extension.extensionName);
             available.insert(extension.extensionName);
         }
 
-        spdlog::debug("required extensions:");
+        log_debug("required extensions:");
         auto requiredExtensions = getRequiredExtensions();
         for (const auto &required : requiredExtensions)
         {
-            spdlog::debug("\t{}", required);
+            log_debug("\t", required);
             if (available.find(required) == available.end())
             {
                 throw std::runtime_error("Missing required glfw extension");

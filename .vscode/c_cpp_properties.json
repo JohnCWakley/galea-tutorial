@@ -3,13 +3,11 @@
         {
             "name": "Win32",
             "includePath": [
-                "D:\\TDM-GCC-64\\x86_64-w64-mingw32\\include",
-                "${VULKAN_SDK}\\Include",
-                "${workspaceFolder}\\**",
-                "D:\\sdks\\glfw\\include",
-                "D:\\sdks\\glm\\",
-                "D:\\sdks\\spdlog\\include",
-                "D:\\sdks\\tiny_obj_loader"
+                "${MINGW_ROOT}/x86_64-w64-mingw32/include",
+                "${USERPROFILE}/dev/sdks/vulkan/Include",
+                "${USERPROFILE}/dev/sdks/glfw/include",
+                "${USERPROFILE}/dev/sdks/glm/glm",
+                "${workspaceFolder}/src/third_party"
             ],
             "defines": [
                 "_DEBUG",
@@ -17,17 +15,16 @@
                 "_UNICODE"
             ],
             "windowsSdkVersion": "10.0.19041.0",
-            "compilerPath": "D:\\TDM-GCC-64\\bin\\g++.exe",
+            "compilerPath": "${TDM_GCC_ROOT}/bin/g++.exe",
             "cStandard": "c17",
             "cppStandard": "c++17",
-            "intelliSenseMode": "gcc-x64"
+            "intelliSenseMode": "gcc-x64",
+            "configurationProvider": "ms-vscode.cmake-tools"
         },
         {
             "name": "Linux",
             "includePath": [
-                "${VULKAN_SDK}/include",
-                "${HOME}/dev/libs/include",
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/src/third_party"
             ],
             "defines": [
                 "_DEBUG",

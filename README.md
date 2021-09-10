@@ -1,34 +1,23 @@
 # galea-tutorial
 This is just a repo to hold my code for learning the Vulkan API. I am following the truly amazing tutorial series by [Brenden Galea](https://www.youtube.com/channel/UC9pXmjxsQHeFH9vgCeRsHcw).
 
-I have also included [spdlog](https://github.com/gabime/spdlog) for logging and my own [EZ Input library](https://github.com/JohnCWakley/ezi), dropped into the `src/third_party/ezi` folder.
+I have also included my own [EZ Input library](https://github.com/JohnCWakley/ezi), dropped into the `src/third_party/ezi` folder.
 
-## Setup:
 ### Dependencies:
 * [Vulkan API](https://vulkan.lunarg.com/)
 * [GLFW](https://www.glfw.org/download)
 * [glm](https://github.com/g-truc/glm)
-* [spdlog](https://github.com/gabime/spdlog)
 
-#### Windows 10/11:
-* Add `%VULKAN_SDK%\Bin` to your PATH environment variable
-* Install [tdm-gcc](https://jmeubank.github.io/tdm-gcc/download/)
-* Unzip and move glfw, glm, and spdlog into `C:\SDKs` folders
-  * Be sure to rename the folders like this: `glfw`, `glm`, `spdlog`
-  * Or update the paths in `.vscode/c_cpp_properties.json` and `CMakeLists.txt`
+Update `CMakeLists.txt` and `.vscode/c_cpp_properties.json` files with the location of the dependencies.
 
-#### Linux:
-* Debian/Ubuntu:
-    * `sudo apt install build-essential vulkan-tools libvulkan-dev vulkan-validationlayers-dev spirv-tools libglfw3-dev libglm-dev spdlog`
-* Solus:
-    * `$ sudo eopkg it -c system.devel`
-    * `$ sudo eopkg it vulkan vulkan-headers vulkan-tools vulkan-validation-layers glm glfw-devel mesalib-devel spdlog-devel`
+For my dev environment, I placed all dependencies (including Vulkan SDK) into a folder: `C:\Users\USER_NAME\dev\sdks`
 
-## Build:
-(For Windows, I use Git Bash)
+### Build:
+(For Windows, I use **Git Bash**)
 * `$ git clone https://github.com/JohnCWakley/galea-tutorial`
 * `$ cd galea-tutorial`
 * `$ . build.sh`
     * Note the space between `.` and `build.sh` above.
-* `$ make`
+* `$ make -j$(nproc)` or `make -j16` or `make`
+    * `$(nproc)` returns your CPU Core count (if you don't know) to multi-thread building.
 * `$ ./demo`

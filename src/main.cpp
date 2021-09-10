@@ -1,16 +1,14 @@
 #include "app.hpp"
+#include "logger.hpp"
 
 #include <cstdlib>
 #include <iostream>
 #include <stdexcept>
-#include <spdlog/spdlog.h>
 
 int main()
 {
-#ifndef NDEBUG
-    spdlog::set_level(spdlog::level::debug);
-#endif
-
+    log_info("starting demo");
+    
     ve::App app{};
 
     try

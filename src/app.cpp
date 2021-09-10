@@ -3,13 +3,13 @@
 #include "keyboard_movement_controller.hpp"
 #include "camera.hpp"
 #include "simple_render_system.hpp"
+#include "logger.hpp"
 
 #define GLM_FORCE_RADIANS
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
 #include <glm/glm.hpp>
 #include <glm/gtc/constants.hpp>
 
-#include <spdlog/spdlog.h>
 #include <array>
 #include <chrono>
 #include <cassert>
@@ -26,10 +26,10 @@ namespace ve
         input.init(window.getWindow());
 
         input.addListener("key_down", [](int key, int mods)
-                          { spdlog::debug("key_down: {}", key); });
+                          { log_debug("key_down: ", key); });
 
         input.addListener("key_up", [](int key, int mods)
-                          { spdlog::debug("key_up: {}", key); });
+                          { log_debug("key_up: ", key); });
 
         input.addListener("key_pressed", [this](int key, int mods)
                           {
@@ -39,30 +39,30 @@ namespace ve
                               }
                               else
                               {
-                                  spdlog::debug("key_pressed: {}", key);
+                                  log_debug("key_pressed: ", key);
                               }
                           });
 
         input.addListener("button_down", [](int button, int mods)
-                          { spdlog::debug("button_down: {}", button); });
+                          { log_debug("button_down: ", button); });
 
         input.addListener("button_up", [](int button, int mods)
-                          { spdlog::debug("button_up: {}", button); });
+                          { log_debug("button_up: ", button); });
 
         input.addListener("button_clicked", [](int button, int mods)
-                          { spdlog::debug("button_clicked: {}", button); });
+                          { log_debug("button_clicked: ", button); });
 
         input.addListener("wheel_left", [](int offset)
-                          { spdlog::debug("wheel_left: {}", offset); });
+                          { log_debug("wheel_left: ", offset); });
 
         input.addListener("wheel_right", [](int offset)
-                          { spdlog::debug("wheel_right: {}", offset); });
+                          { log_debug("wheel_right: ", offset); });
 
         input.addListener("wheel_up", [](int offset)
-                          { spdlog::debug("wheel_up: {}", offset); });
+                          { log_debug("wheel_up: ", offset); });
 
         input.addListener("wheel_down", [](int offset)
-                          { spdlog::debug("wheel_down: {}", offset); });
+                          { log_debug("wheel_down: ", offset); });
 
         input.addListener("mouse_moved", [this](glm::vec2 position, glm::vec2 offset)
                           {
