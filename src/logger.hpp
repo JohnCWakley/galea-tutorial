@@ -15,7 +15,7 @@ static bool win_console_initialized = false;
 #define CYAN "\033[36m"
 #define RESET "\033[0;0m"
 
-const char* get_now_time();
+std::string get_now_time();
 
 template<typename ... Args>
 void _log(const char* level_color, const char* level_string, const Args&... args) {
