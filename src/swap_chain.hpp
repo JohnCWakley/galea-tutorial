@@ -8,22 +8,20 @@
 #include <string>
 #include <vector>
 
-namespace ve
-{
+namespace ve {
 
-    class SwapChain
-    {
+    class SwapChain {
     public:
         static constexpr int MAX_FRAMES_IN_FLIGHT = 2;
 
-        SwapChain(Device &deviceRef, VkExtent2D windowExtent);
+        SwapChain(Device& deviceRef, VkExtent2D windowExtent);
         SwapChain(
-            Device &deviceRef, VkExtent2D windowExtent, std::shared_ptr<SwapChain> previous);
+            Device& deviceRef, VkExtent2D windowExtent, std::shared_ptr<SwapChain> previous);
 
         ~SwapChain();
 
-        SwapChain(const SwapChain &) = delete;
-        SwapChain &operator=(const SwapChain &) = delete;
+        SwapChain(const SwapChain&) = delete;
+        SwapChain& operator=(const SwapChain&) = delete;
 
         VkFramebuffer getFrameBuffer(int index) { return swapChainFramebuffers[index]; }
         VkRenderPass getRenderPass() { return renderPass; }
@@ -34,19 +32,17 @@ namespace ve
         uint32_t width() { return swapChainExtent.width; }
         uint32_t height() { return swapChainExtent.height; }
 
-        float extentAspectRatio()
-        {
+        float extentAspectRatio() {
             return static_cast<float>(swapChainExtent.width) / static_cast<float>(swapChainExtent.height);
         }
         VkFormat findDepthFormat();
 
-        VkResult acquireNextImage(uint32_t *imageIndex);
-        VkResult submitCommandBuffers(const VkCommandBuffer *buffers, uint32_t *imageIndex);
+        VkResult acquireNextImage(uint32_t* imageIndex);
+        VkResult submitCommandBuffers(const VkCommandBuffer* buffers, uint32_t* imageIndex);
 
-        bool compareSwapFormats(const SwapChain &swapChain) const
-        {
+        bool compareSwapFormats(const SwapChain& swapChain) const {
             return swapChain.swapChainDepthFormat == swapChainDepthFormat &&
-                   swapChain.swapChainImageFormat == swapChainImageFormat;
+                swapChain.swapChainImageFormat == swapChainImageFormat;
         }
 
     private:
@@ -60,10 +56,10 @@ namespace ve
 
         // Helper functions
         VkSurfaceFormatKHR chooseSwapSurfaceFormat(
-            const std::vector<VkSurfaceFormatKHR> &availableFormats);
+            const std::vector<VkSurfaceFormatKHR>& availableFormats);
         VkPresentModeKHR chooseSwapPresentMode(
-            const std::vector<VkPresentModeKHR> &availablePresentModes);
-        VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR &capabilities);
+            const std::vector<VkPresentModeKHR>& availablePresentModes);
+        VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
 
         VkFormat swapChainImageFormat;
         VkFormat swapChainDepthFormat;
@@ -78,7 +74,7 @@ namespace ve
         std::vector<VkImage> swapChainImages;
         std::vector<VkImageView> swapChainImageViews;
 
-        Device &device;
+        Device& device;
         VkExtent2D windowExtent;
 
         VkSwapchainKHR swapChain;

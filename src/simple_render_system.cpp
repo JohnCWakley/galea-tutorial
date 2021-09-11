@@ -9,29 +9,24 @@
 #include <cassert>
 #include <stdexcept>
 
-namespace ve
-{
+namespace ve {
 
-    struct SimplePushConstantData
-    {
-        glm::mat4 transform{1.f};
-        glm::mat4 normalMatrix{1.f};
+    struct SimplePushConstantData {
+        glm::mat4 transform{ 1.f };
+        glm::mat4 normalMatrix{ 1.f };
     };
 
-    SimpleRenderSystem::SimpleRenderSystem(Device &device, VkRenderPass renderPass)
-        : device{device}
-    {
+    SimpleRenderSystem::SimpleRenderSystem(Device& device, VkRenderPass renderPass)
+        : device{ device } {
         createPipelineLayout();
         createPipeline(renderPass);
     }
 
-    SimpleRenderSystem::~SimpleRenderSystem()
-    {
+    SimpleRenderSystem::~SimpleRenderSystem() {
         vkDestroyPipelineLayout(device.device(), pipelineLayout, nullptr);
     }
 
-    void SimpleRenderSystem::createPipelineLayout()
-    {
+    void SimpleRenderSystem::createPipelineLayout() {
         VkPushConstantRange pushConstantRange{};
         pushConstantRange.stageFlags = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT;
         pushConstantRange.offset = 0;
@@ -44,14 +39,12 @@ namespace ve
         pipelineLayoutInfo.pushConstantRangeCount = 1;
         pipelineLayoutInfo.pPushConstantRanges = &pushConstantRange;
         if (vkCreatePipelineLayout(device.device(), &pipelineLayoutInfo, nullptr, &pipelineLayout) !=
-            VK_SUCCESS)
-        {
+            VK_SUCCESS) {
             throw std::runtime_error("failed to create pipeline layout!");
         }
     }
 
-    void SimpleRenderSystem::createPipeline(VkRenderPass renderPass)
-    {
+    void SimpleRenderSystem::createPipeline(VkRenderPass renderPass) {
         assert(pipelineLayout != nullptr && "Cannot create pipeline before pipeline layout");
 
         PipelineConfigInfo pipelineConfig{};
@@ -65,14 +58,12 @@ namespace ve
             pipelineConfig);
     }
 
-    void SimpleRenderSystem::renderGameObjects(VkCommandBuffer commandBuffer, std::vector<GameObject> &gameObjects, const Camera &camera)
-    {
+    void SimpleRenderSystem::renderGameObjects(VkCommandBuffer commandBuffer, std::vector<GameObject>& gameObjects, const Camera& camera) {
         pipeline->bind(commandBuffer);
 
         auto projectionView = camera.getProjection() * camera.getView();
 
-        for (auto &obj : gameObjects)
-        {
+        for (auto& obj : gameObjects) {
             SimplePushConstantData push{};
             auto modelMatrix = obj.transform.mat4();
             push.transform = projectionView * modelMatrix;

@@ -3,13 +3,10 @@
 #include "game_object.hpp"
 #include <ezi/input.hpp>
 
-namespace ve
-{
-    class KeyboardMovementController
-    {
+namespace ve {
+    class KeyboardMovementController {
     public:
-        struct KeyMappings
-        {
+        struct KeyMappings {
             int moveLeft = GLFW_KEY_A;
             int moveRight = GLFW_KEY_D;
             int moveForward = GLFW_KEY_W;
@@ -22,10 +19,10 @@ namespace ve
             int lookDown = GLFW_KEY_DOWN;
         };
 
-        void moveInPlaneXZ(ezi::Input input, float dt, GameObject &gameObject);
+        void moveInPlaneXZ(ezi::Input input, float dt, GameObject& gameObject);
 
         KeyMappings keys{};
-        float moveSpeed{3.f};
-        float lookSpeed{1.5f};
+        float moveSpeed{ 3.f };
+        float lookSpeed{ 1.5f };
     };
 }

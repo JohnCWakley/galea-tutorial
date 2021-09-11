@@ -8,29 +8,25 @@
 #include <memory>
 #include <vector>
 
-namespace ve
-{
-    class Renderer
-    {
+namespace ve {
+    class Renderer {
     public:
-        Renderer(Window &window, Device &device);
+        Renderer(Window& window, Device& device);
         ~Renderer();
 
-        Renderer(const Renderer &) = delete;
-        Renderer &operator=(const Renderer &) = delete;
+        Renderer(const Renderer&) = delete;
+        Renderer& operator=(const Renderer&) = delete;
 
         VkRenderPass getSwapChainRenderPass() const { return swapChain->getRenderPass(); }
         float getAspectRatio() const { return swapChain->extentAspectRatio(); }
         bool isFrameInProgress() const { return isFrameStarted; }
 
-        VkCommandBuffer getCurrentCommandBuffer() const
-        {
+        VkCommandBuffer getCurrentCommandBuffer() const {
             assert(isFrameStarted && "Cannot get command buffer when frame not in progress");
             return commandBuffers[currentFrameIndex];
         }
 
-        int getFrameIndex() const
-        {
+        int getFrameIndex() const {
             assert(isFrameStarted && "Cannot get frame index when frame not in progress");
             return currentFrameIndex;
         }
@@ -45,13 +41,13 @@ namespace ve
         void freeCommandBuffers();
         void recreateSwapChain();
 
-        Window &window;
-        Device &device;
+        Window& window;
+        Device& device;
         std::unique_ptr<SwapChain> swapChain;
         std::vector<VkCommandBuffer> commandBuffers;
 
         uint32_t currentImageIndex;
-        int currentFrameIndex{0};
-        bool isFrameStarted{false};
+        int currentFrameIndex{ 0 };
+        bool isFrameStarted{ false };
     };
 }

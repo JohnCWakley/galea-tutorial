@@ -1,9 +1,7 @@
 #include "game_object.hpp"
 
-namespace ve
-{
-    glm::mat4 TransformComponent::mat4()
-    {
+namespace ve {
+    glm::mat4 TransformComponent::mat4() {
         const float c3 = glm::cos(rotation.z);
         const float s3 = glm::sin(rotation.z);
         const float c2 = glm::cos(rotation.x);
@@ -29,11 +27,10 @@ namespace ve
                 scale.z * (c1 * c2),
                 0.0f,
             },
-            {translation.x, translation.y, translation.z, 1.0f}};
+            {translation.x, translation.y, translation.z, 1.0f} };
     }
 
-    glm::mat3 TransformComponent::normalMatrix()
-    {
+    glm::mat3 TransformComponent::normalMatrix() {
         const float c3 = glm::cos(rotation.z);
         const float s3 = glm::sin(rotation.z);
         const float c2 = glm::cos(rotation.x);

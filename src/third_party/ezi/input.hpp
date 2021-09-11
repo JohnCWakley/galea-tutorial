@@ -31,15 +31,13 @@
 #include <functional>
 #include <map>
 
-namespace ezi
-{
-    class Input : public EventEmitter
-    {
+namespace ezi {
+    class Input : public EventEmitter {
     public:
         Input();
         ~Input();
 
-        void init(GLFWwindow *window);
+        void init(GLFWwindow* window);
 
         bool isKeyDown(int key) { return keyDown[key]; }
         bool isMouseButtonDown(int button) { return buttonDown[button]; }
@@ -47,25 +45,25 @@ namespace ezi
         glm::vec2 getMousePositionOffset() { return mousePositionOffset; }
 
     private:
-        static void _keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
-        static void _mouseButtonCallback(GLFWwindow *window, int button, int action, int mods);
-        static void _mouseWheelCallback(GLFWwindow *window, double xoffset, double yoffset);
-        static void _mousePositionCallback(GLFWwindow *window, double xpos, double ypos);
+        static void _keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+        static void _mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
+        static void _mouseWheelCallback(GLFWwindow* window, double xoffset, double yoffset);
+        static void _mousePositionCallback(GLFWwindow* window, double xpos, double ypos);
 
         void _onKeyboardEvent(int key, int scancode, int action, int mods);
         void _onMouseButtonEvent(int button, int action, int mods);
         void _onMouseWheelEvent(double xoffset, double yoffset);
         void _onMouseMoveEvent(double xpos, double ypos);
 
-        int downTimeThreshold{250};
+        int downTimeThreshold{ 250 };
 
-        bool keyDown[GLFW_KEY_LAST + 1] = {false};
-        long long keyDownTime[GLFW_KEY_LAST + 1] = {0};
+        bool keyDown[GLFW_KEY_LAST + 1] = { false };
+        long long keyDownTime[GLFW_KEY_LAST + 1] = { 0 };
 
-        bool buttonDown[GLFW_MOUSE_BUTTON_LAST + 1] = {false};
-        long long buttonDownTime[GLFW_MOUSE_BUTTON_LAST + 1] = {0};
+        bool buttonDown[GLFW_MOUSE_BUTTON_LAST + 1] = { false };
+        long long buttonDownTime[GLFW_MOUSE_BUTTON_LAST + 1] = { 0 };
 
-        glm::vec2 mousePosition{0.f};
-        glm::vec2 mousePositionOffset{0.f};
+        glm::vec2 mousePosition{ 0.f };
+        glm::vec2 mousePositionOffset{ 0.f };
     };
 }

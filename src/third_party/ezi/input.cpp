@@ -26,14 +26,12 @@
 
 #include <chrono>
 
-namespace ezi
-{
+namespace ezi {
     Input::Input() : EventEmitter() {}
 
     Input::~Input() {}
 
-    void Input::init(GLFWwindow *window)
-    {
+    void Input::init(GLFWwindow* window) {
         glfwSetWindowUserPointer(window, this);
         glfwSetKeyCallback(window, &Input::_keyCallback);
         glfwSetMouseButtonCallback(window, &Input::_mouseButtonCallback);
@@ -41,54 +39,42 @@ namespace ezi
         glfwSetCursorPosCallback(window, &Input::_mousePositionCallback);
     }
 
-    void Input::_keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
-    {
-        static_cast<Input *>(glfwGetWindowUserPointer(window))->_onKeyboardEvent(key, scancode, action, mods);
+    void Input::_keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+        static_cast<Input*>(glfwGetWindowUserPointer(window))->_onKeyboardEvent(key, scancode, action, mods);
     }
 
-    void Input::_mouseButtonCallback(GLFWwindow *window, int button, int action, int mods)
-    {
-        static_cast<Input *>(glfwGetWindowUserPointer(window))->_onMouseButtonEvent(button, action, mods);
+    void Input::_mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
+        static_cast<Input*>(glfwGetWindowUserPointer(window))->_onMouseButtonEvent(button, action, mods);
     }
 
-    void Input::_mouseWheelCallback(GLFWwindow *window, double xoffset, double yoffset)
-    {
-        static_cast<Input *>(glfwGetWindowUserPointer(window))->_onMouseWheelEvent(xoffset, yoffset);
+    void Input::_mouseWheelCallback(GLFWwindow* window, double xoffset, double yoffset) {
+        static_cast<Input*>(glfwGetWindowUserPointer(window))->_onMouseWheelEvent(xoffset, yoffset);
     }
 
-    void Input::_mousePositionCallback(GLFWwindow *window, double xpos, double ypos)
-    {
-        static_cast<Input *>(glfwGetWindowUserPointer(window))->_onMouseMoveEvent(xpos, ypos);
+    void Input::_mousePositionCallback(GLFWwindow* window, double xpos, double ypos) {
+        static_cast<Input*>(glfwGetWindowUserPointer(window))->_onMouseMoveEvent(xpos, ypos);
     }
 
-    long long _now()
-    {
+    long long _now() {
         return std::chrono::duration_cast<std::chrono::milliseconds>(
                    std::chrono::system_clock::now().time_since_epoch())
             .count();
     }
 
-    void Input::_onKeyboardEvent(int key, int scancode, int action, int mods)
-    {
+    void Input::_onKeyboardEvent(int key, int scancode, int action, int mods) {
         long long now = _now();
 
-        if (action == GLFW_PRESS)
-        {
+        if (action == GLFW_PRESS) {
             keyDown[key] = true;
             keyDownTime[key] = now;
 
             emit("key_down", key, mods);
-        }
-        else if (action == GLFW_RELEASE)
-        {
+        } else if (action == GLFW_RELEASE) {
             keyDown[key] = false;
 
-            if (now - keyDownTime[key] < downTimeThreshold)
-            {
+            if (now - keyDownTime[key] < downTimeThreshold) {
                 emit("key_pressed", key, mods);
-            }
-            else
-            {
+            } else {
                 emit("key_up", key, mods);
             }
 
@@ -96,27 +82,20 @@ namespace ezi
         }
     }
 
-    void Input::_onMouseButtonEvent(int button, int action, int mods)
-    {
+    void Input::_onMouseButtonEvent(int button, int action, int mods) {
         long long now = _now();
 
-        if (action == GLFW_PRESS)
-        {
+        if (action == GLFW_PRESS) {
             buttonDown[button] = true;
             buttonDownTime[button] = now;
 
             emit("button_down", button, mods);
-        }
-        else if (action == GLFW_RELEASE)
-        {
+        } else if (action == GLFW_RELEASE) {
             buttonDown[button] = false;
 
-            if (now - buttonDownTime[button] < downTimeThreshold)
-            {
+            if (now - buttonDownTime[button] < downTimeThreshold) {
                 emit("button_clicked", button, mods);
-            }
-            else
-            {
+            } else {
                 emit("button_up", button, mods);
             }
 
@@ -124,29 +103,21 @@ namespace ezi
         }
     }
 
-    void Input::_onMouseWheelEvent(double xoffset, double yoffset)
-    {
-        if (xoffset > 0)
-        {
+    void Input::_onMouseWheelEvent(double xoffset, double yoffset) {
+        if (xoffset > 0) {
             emit("wheel_left", (int)xoffset);
-        }
-        else if (xoffset < 0)
-        {
+        } else if (xoffset < 0) {
             emit("wheel_right", (int)xoffset);
         }
 
-        if (yoffset > 0)
-        {
+        if (yoffset > 0) {
             emit("wheel_up", (int)yoffset);
-        }
-        else if (yoffset < 0)
-        {
+        } else if (yoffset < 0) {
             emit("wheel_down", (int)yoffset);
         }
     }
 
-    void Input::_onMouseMoveEvent(double xpos, double ypos)
-    {
+    void Input::_onMouseMoveEvent(double xpos, double ypos) {
         mousePositionOffset.x = mousePosition.x - xpos;
         mousePositionOffset.y = mousePosition.y - ypos;
         mousePosition.x = xpos;

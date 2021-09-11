@@ -5,13 +5,11 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <memory>
 
-namespace ve
-{
+namespace ve {
 
-    struct TransformComponent
-    {
+    struct TransformComponent {
         glm::vec3 translation{}; // (position offset)
-        glm::vec3 scale{1.f, 1.f, 1.f};
+        glm::vec3 scale{ 1.f, 1.f, 1.f };
         glm::vec3 rotation{};
 
         // Matrix corrsponds to Translate * Ry * Rx * Rz * Scale
@@ -21,21 +19,19 @@ namespace ve
         glm::mat3 normalMatrix();
     };
 
-    class GameObject
-    {
+    class GameObject {
     public:
         using id_t = unsigned int;
 
-        static GameObject createGameObject()
-        {
+        static GameObject createGameObject() {
             static id_t currentId = 0;
-            return GameObject{currentId++};
+            return GameObject{ currentId++ };
         }
 
-        GameObject(const GameObject &) = delete;
-        GameObject &operator=(const GameObject &) = delete;
-        GameObject(GameObject &&) = default;
-        GameObject &operator=(GameObject &&) = default;
+        GameObject(const GameObject&) = delete;
+        GameObject& operator=(const GameObject&) = delete;
+        GameObject(GameObject&&) = default;
+        GameObject& operator=(GameObject&&) = default;
 
         id_t getId() { return id; }
 
@@ -44,7 +40,7 @@ namespace ve
         TransformComponent transform{};
 
     private:
-        GameObject(id_t objId) : id{objId} {}
+        GameObject(id_t objId) : id{ objId } {}
 
         id_t id;
     };
