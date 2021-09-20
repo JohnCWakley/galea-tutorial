@@ -3,6 +3,8 @@ This is just a repo to hold my code for learning the Vulkan API. I am following 
 
 I have also included my own [EZ Input library](https://github.com/JohnCWakley/ezi), dropped into the `src/third_party/ezi` folder.
 
+I also use [TDM-GCC (MinGW)](https://jmeubank.github.io/tdm-gcc/)
+
 ### Dependencies:
 * [Vulkan API](https://vulkan.lunarg.com/)
 * [GLFW](https://www.glfw.org/download)
