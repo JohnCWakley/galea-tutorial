@@ -1,10 +1,6 @@
 cmake_minimum_required(VERSION 3.20.0)
 project(demo VERSION 0.1.0)
 
-set(MINGW_INC_PATH )
-set(MINGW_LIB_PATH )
-set(VULKAN_INC_PATH )
-
 file(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/src/*.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
