@@ -18,7 +18,7 @@ static bool win_console_initialized = false;
 std::string get_now_time();
 
 template<typename ... Args>
-void _log(const char* level_color, const char* level_string, const Args&... args) {
+std::string _get_log_str(const char* level_color, const char* level_string, const Args&... args) {
 
 #if defined WIN32 || defined __MINGW32__
     if (!win_console_initialized) {
@@ -43,29 +43,30 @@ void _log(const char* level_color, const char* level_string, const Args&... args
 
     ((ss << args), ...);
 
-    ss << RESET;
+    ss << RESET << "\n";
 
-    std::cout << ss.str() << std::endl;
+    return ss.str();
 }
 
 template<typename ... Args>
 void log_error(const Args&... args) {
-    _log(RED, "ERROR", args...);
+    std::cout << _get_log_str(RED, "ERROR", args...);
+    abort();
 }
 
 template<typename ... Args>
 void log_warn(const Args&... args) {
-    _log(YELLOW, " WARN", args...);
+    std::cout << _get_log_str(YELLOW, " WARN", args...);
 }
 
 template<typename ... Args>
 void log_info(const Args&... args) {
-    _log(WHITE, " INFO", args...);
+    std::cout << _get_log_str(WHITE, " INFO", args...);
 }
 
 template<typename ... Args>
 void log_debug(const Args&... args) {
 #ifndef NDEBUG
-    _log(GREY, "DEBUG", args...);
+    std::cout << _get_log_str(GREY, "DEBUG", args...);
 #endif
 }
