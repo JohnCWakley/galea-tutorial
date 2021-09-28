@@ -39,9 +39,9 @@ namespace ve {
         VkBufferUsageFlags getUsageFlags() const { return usageFlags; }
         VkMemoryPropertyFlags getMemoryPropertyFlags() const { return memoryPropertyFlags; }
         VkDeviceSize getBufferSize() const { return bufferSize; }
-        static VkDeviceSize getAlignment(VkDeviceSize instanceSize, VkDeviceSize minOffsetAlignment);
 
     private:
+        static VkDeviceSize getAlignment(VkDeviceSize instanceSize, VkDeviceSize minOffsetAlignment);
         Device& device;
         void* mapped = nullptr;
         VkBuffer buffer = VK_NULL_HANDLE;

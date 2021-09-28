@@ -15,6 +15,7 @@
 #include <chrono>
 #include <cassert>
 #include <stdexcept>
+#include <numeric>
 
 namespace ve {
     const float MAX_FRAME_TIME = 1.f;
@@ -68,13 +69,18 @@ namespace ve {
     void App::run() {
         log_debug("device.properties.limits.minUniformBufferOffsetAlignment:", device.properties.limits.minUniformBufferOffsetAlignment);
 
+        auto minOffsetAlignment = std::lcm(
+            device.properties.limits.minUniformBufferOffsetAlignment,
+            device.properties.limits.nonCoherentAtomSize
+        );
+
         Buffer globalUboBuffer{
             device,
-            Buffer::getAlignment(sizeof(GlobalUbo), device.properties.limits.nonCoherentAtomSize),
+            sizeof(GlobalUbo),
             SwapChain::MAX_FRAMES_IN_FLIGHT,
             VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
             VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT,
-            device.properties.limits.minUniformBufferOffsetAlignment,
+            minOffsetAlignment,
         };
 
         globalUboBuffer.map();
